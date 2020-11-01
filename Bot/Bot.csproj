@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{58796931-7E6E-4F59-91C9-5DB672A16B6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bot</RootNamespace>
+    <AssemblyName>Bot</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AI\AI.cs" />
+    <Compile Include="AI\AI_TFT.cs" />
+    <Compile Include="Bot.cs" />
+    <Compile Include="Constants\AvailableGameType.cs" />
+    <Compile Include="Constants\ClickType.cs" />
+    <Compile Include="Constants\ColorConstants.cs" />
+    <Compile Include="Constants\FormConstants.cs" />
+    <Compile Include="Constants\LeagueConstants.cs" />
+    <Compile Include="Constants\PixelsConstants.cs" />
+    <Compile Include="DEBUG.cs" />
+    <Compile Include="EndGameData.cs" />
+    <Compile Include="Patterns\Actions\AcceptQue.cs" />
+    <Compile Include="Patterns\Actions\AcceptStuff.cs" />
+    <Compile Include="Patterns\Actions\ClickAction.cs" />
+    <Compile Include="Patterns\Actions\ClickUntilColorAction.cs" />
+    <Compile Include="Patterns\Actions\DefinePatternAction.cs" />
+    <Compile Include="Patterns\Actions\ExecuteAIAction.cs" />
+    <Compile Include="Patterns\Actions\GetPlacmentTFT.cs" />
+    <Compile Include="Patterns\Actions\LogAction.cs" />
+    <Compile Include="Patterns\Actions\MoveAction.cs" />
+    <Compile Include="Patterns\Actions\PatternAction.cs" />
+    <Compile Include="Patterns\Actions\SleepAction.cs" />
+    <Compile Include="Patterns\Actions\WaitForReconnect.cs" />
+    <Compile Include="Patterns\Actions\WaitUntilColorAction.cs" />
+    <Compile Include="Patterns\Actions\WaitUntilProcessFocusAction.cs" />
+    <Compile Include="Patterns\Actions\WaitUntilProcessOpenAction.cs" />
+    <Compile Include="Patterns\EndGamePatternTFT.cs" />
+    <Compile Include="Patterns\MapPattern.cs" />
+    <Compile Include="Patterns\Pattern.cs" />
+    <Compile Include="Patterns\StartTFTPattern.cs" />
+    <Compile Include="Patterns\TFT_MapPattern.cs" />
+    <Compile Include="Patterns\TFT_PATTERN.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Windows\ApplicationCapture.cs" />
+    <Compile Include="Windows\AsyncRandom.cs" />
+    <Compile Include="Windows\Interop.cs" />
+    <Compile Include="Windows\ScreenCapture.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InputManager\InputManager.csproj">
+      <Project>{f6b36eeb-c2ca-4f13-b2c1-3cd0294530f2}</Project>
+      <Name>InputManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InputManegerV2\InputManegerV2.vcxproj">
+      <Project>{9b048ae7-9e2b-4af8-9fda-741d20c5bb93}</Project>
+      <Name>InputManegerV2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
