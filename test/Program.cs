@@ -1,18 +1,31 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
+
+using hotKey;
 using LeagueBot;
 
 namespace lol_bot_ligth {
     class Program {
+
+
+        static Bot bot = new Bot();
+        static Thread work_thread = null;
+        static bool to_exit = false;
+
         public static int Main() {
 
-            bool to_exit = false;
-            Bot bot = new Bot();
-            Thread work_thread = null;
+            #region SETUP_HOTKEY
+            HotKeyManager.RegisterHotKey(Keys.F10, KeyModifiers.Alt);
+            HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(stop_key_pressed);
+            Console.WriteLine("Use ALT+F10 to stop the bot");
+            #endregion
 
+            Console.WriteLine("use help to get help");
 
-            while(!to_exit) {
+            while (!to_exit) {
                 Console.Write("> ");
                 string com = Console.ReadLine().ToString().ToUpper();
 
@@ -53,11 +66,32 @@ namespace lol_bot_ligth {
                         }
                         break;
 
-                }
+                    case "EGG":
+                    case "SAI":
+                    case "TOBMAN":
+                    case "BRAUM":
+                        for(int i = 0; i < 50; i++) {
+                            Console.WriteLine("http://www.randomkittengenerator.com/");
+                        }
+                        break;
 
+                    default:
+                        Console.WriteLine($"{com} is not a command");
+                        break;
+
+                }
             }
 
             return 0;
         }
+
+        static void  stop_key_pressed(object sender, HotKeyEventArgs e) {
+            Console.WriteLine("STOPING BOT");
+            if (work_thread != null) {
+                work_thread.Abort();
+                work_thread = null;
+            }
+        }
+
     }
 }

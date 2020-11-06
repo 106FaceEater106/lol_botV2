@@ -5,8 +5,10 @@ using LeagueBot.Windows;
 using System;
 using System.Threading;
 
+using System.Data;
+
 namespace LeagueBot.Patterns {
-    public abstract class Pattern {
+    public abstract class Pattern : IDisposable {
         public virtual string ProcessName {
             get;
         }
@@ -60,6 +62,7 @@ namespace LeagueBot.Patterns {
                     Console.WriteLine("(" + this.GetType().Name + "): " + Actions[I].ToString());
                     Actions[I].Apply(Bot, this);
                     Thread.Sleep((int)(Actions[I].Duration * 1000));
+                    Actions[I] = null;
                     I++;
                 }
                 catch (Exception ex) {

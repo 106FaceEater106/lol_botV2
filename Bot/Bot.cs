@@ -16,7 +16,6 @@ namespace LeagueBot {
 
         public event EventHandler<EndGameData> GameEndEvent;
 
-
         private Pattern Pattern;
         public AvailableGameType GameType;
         public String status; //TODO: REMOVE
@@ -41,13 +40,17 @@ namespace LeagueBot {
         */
 
         public void Start(AvailableGameType gameType = AvailableGameType.TFT) {
-            GameType = gameType;
+            DBG.log("Starting bot", DateTime.Now);
+            //GameType = AvailableGameType.TFT;
             working = true;
 
-            switch (gameType) {
+            switch (AvailableGameType.TFT) {
                 case AvailableGameType.TFT:
                     ApplyPattern(new StartTFTPattern(this));
                     break;
+                default:
+                    throw new NotImplementedException();
+                    //break;
             }
         }
 
@@ -75,10 +78,11 @@ namespace LeagueBot {
 
         public void ApplyPattern(Pattern p, int i = 0) {
             if(Pattern != null) {
-                Pattern = null;
+                Pattern.Dispose();
             }
             Pattern = p;
             Pattern.Execute(i);
+            Pattern.Dispose();
         }
 
         public void RightClick(Point point) {
