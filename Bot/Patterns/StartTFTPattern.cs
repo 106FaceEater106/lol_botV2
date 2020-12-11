@@ -1,11 +1,14 @@
-﻿using LeagueBot.Constants;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Diagnostics;
+
+using LeagueBot.Constants;
 using LeagueBot.Patterns.Actions;
 
 namespace LeagueBot.Patterns {
 
     static class big_brain {
         public static Point get_point(Bot bot) {
+            Debug.WriteLine($"ask for event");
             if(bot.isEvent) {
                 return PixelsConstants.TFT_EVENT;
             } else {
@@ -19,7 +22,6 @@ namespace LeagueBot.Patterns {
 
         public override PatternAction[] Actions => new PatternAction[]
         {
-            new LogAction("TEST","DBG LOG"),
             new ClickAction(ClickType.LEFT,PixelsConstants.PLAY_BUTTON,"START PLAY",1),
             new ClickAction(ClickType.LEFT,PixelsConstants.PVP_MBUTTON,"START PLAY",1),
             new ClickAction(ClickType.LEFT,big_brain.get_point(Bot),"CREATE TFT LOBY",1),// TODO: opt log ffs

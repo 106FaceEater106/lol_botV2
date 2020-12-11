@@ -30,5 +30,8 @@ namespace LeagueBot.Patterns.Actions {
             Console.Write(DateTime.Now.Subtract(stuck_start).TotalSeconds);
             Console.WriteLine("S");
         }
+
+        public override void Dispose() {
+        }
     }
 }

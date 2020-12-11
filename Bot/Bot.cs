@@ -1,14 +1,17 @@
-﻿using InputManager;
-using LeagueBot.AI;
-using LeagueBot.Constants;
-using LeagueBot.DEBUG;
-using LeagueBot.Event;
-using LeagueBot.Patterns;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
 using System.Data;
 using System.Drawing;
+using System.Diagnostics;
+
+
+using LeagueBot.AI;
+using LeagueBot.Event;
+using LeagueBot.DEBUG;
+using LeagueBot.Patterns;
+using LeagueBot.Constants;
+
+using InputManager;
 
 namespace LeagueBot {
     public class Bot {
@@ -17,90 +20,81 @@ namespace LeagueBot {
         public event EventHandler<EndGameData> GameEndEvent;
 
         private Pattern Pattern;
+
         public AvailableGameType GameType;
-        public String status; //TODO: REMOVE
-        public Boolean working;
         public const Int32 buy_delay = 500;
-        public bool isEvent = true;
+        public String status; //TODO: REMOVE
+        public bool working;
+        public bool isEvent = false;
+        public Pattern nextPattern = null;
 
         public Bot() {
             GameEndEvent += on_game_end;
             GameEndEvent += DBG.on_game_end;
         }
 
-        public void ThreadProc() {
-            this.Start(GameType);
-            return;
+
+        public string getVersion() {
+            Version v = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+            return v.ToString();
         }
 
-        /*
-        public void dump_log_to_dbg() {
-            DBG.dump_log();
-        }
-        */
-
+        #region Controll
         public void Start(AvailableGameType gameType = AvailableGameType.TFT) {
-            DBG.log("Starting bot", DateTime.Now);
-            //GameType = AvailableGameType.TFT;
-            working = true;
+            DBG.log("Starting bot");
 
-            switch (AvailableGameType.TFT) {
+            switch (gameType) {
                 case AvailableGameType.TFT:
                     ApplyPattern(new StartTFTPattern(this));
                     break;
+                case AvailableGameType.TEST:
+                    ApplyPattern(new memTestPattern(this));
+                    break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("NO default game mode set");
                     //break;
             }
         }
 
-        /*
-        public void dump_log(string path) {
-            Debug.WriteLine("<LOG START>");
-            StreamWriter f = File.CreateText(path);
-
-            string o = DBG.log_to_string();
-            string o_base64 = Base64Encode(o);
-
-            f.WriteLine(o_base64);
-            Debug.WriteLine(o);
-            Debug.WriteLine("<LOG END>");
-            f.Close();
+        public void ThreadProc() {
+            this.Start();
+            return;
         }
-        */
-
-        /*
-        public static string Base64Encode(string plainText) {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
-        }
-        */
 
         public void ApplyPattern(Pattern p, int i = 0) {
-            if(Pattern != null) {
-                Pattern.Dispose();
-            }
             Pattern = p;
-            Pattern.Execute(i);
-            Pattern.Dispose();
-        }
+            do {
+                Pattern.Execute();
+                Pattern.Dispose();
+                Pattern = nextPattern;
+                nextPattern = null;
 
+            } while(Pattern != null);
+            DBG.log("All patterns done!");
+        }
+        
+        public void Abort(String stop_reson = "unknown reson") {
+            if (Pattern != null) Pattern.Dispose();
+            working = false;
+            DBG.log("BOT STOPED: " + stop_reson, DateTime.Now, "BOT");
+        }
+        #endregion
+
+        #region Mouse
         public void RightClick(Point point) {
             Mouse.Move(point.X, point.Y);
             Mouse.PressButton(Mouse.MouseKeys.Right, 150);
         }
+
         public void LeftClick(Point point, bool NoPress = false) {
             Mouse.Move(point.X, point.Y);
             if (!NoPress) {
                 Mouse.PressButton(Mouse.MouseKeys.Left, 150);
             }
         }
-        public void Abort(String stop_reson = "unknown reson") {
-            if (Pattern != null) Pattern.Dispose();
-            working = false;
-            DBG.log("BOT STOPED: " + stop_reson, DateTime.Now, "BOT");
-        }
+        #endregion
 
+        #region EVENTS
         public void invoke_tft_game_end(object s, EndGameData data) {
             GameEndEvent?.Invoke(s, data);
         }
@@ -111,5 +105,6 @@ namespace LeagueBot {
                 DBG.log(l, DateTime.Now, "BOT");
             }
         }
+        #endregion
     }
 }

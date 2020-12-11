@@ -27,5 +27,8 @@ namespace LeagueBot.Patterns.Actions {
                     break;
             }
         }
+
+        public override void Dispose() {
+        }
     }
 }

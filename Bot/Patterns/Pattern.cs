@@ -4,6 +4,7 @@ using LeagueBot.Patterns.Actions;
 using LeagueBot.Windows;
 using System;
 using System.Threading;
+using System.Diagnostics;
 
 using System.Data;
 
@@ -47,6 +48,7 @@ namespace LeagueBot.Patterns {
         }
 
         public void Execute(int i = 0) {
+            Console.WriteLine("pattern start");
             I = i;
             while (I < Actions.Length) {
                 if (Disposed) {
@@ -59,7 +61,7 @@ namespace LeagueBot.Patterns {
                 try {
                     BringProcessToFront();
                     CenterProcessMainWindow();
-                    Console.WriteLine("(" + this.GetType().Name + "): " + Actions[I].ToString());
+                    DBG.log("(" + this.GetType().Name + "): " + Actions[I].ToString());
                     Actions[I].Apply(Bot, this);
                     Thread.Sleep((int)(Actions[I].Duration * 1000));
                     Actions[I] = null;
@@ -74,6 +76,9 @@ namespace LeagueBot.Patterns {
 
         public virtual void Dispose() {
             Disposed = true;
+            foreach(PatternAction a in Actions) {
+                a.Dispose();
+            }
         }
     }
 }

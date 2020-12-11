@@ -38,23 +38,16 @@ namespace LeagueBot.Patterns.Actions {
                 if (px.R > Color.R - accuracy && px.R < Color.R + accuracy ||
                     px.G > Color.G - accuracy && px.G < Color.G + accuracy ||
                     px.B > Color.B - accuracy && px.B < Color.B + accuracy) {
-                    //Debug.WriteLine("Mark Hit");
                     valid = true;
                 } else {
-                    /*Debug.Write("R = ");
-                    Debug.Write(px.R);
-
-                    Debug.Write(" | G = ");
-                    Debug.Write(px.G);
-
-                    Debug.Write(" | B = ");
-                    Debug.Write(px.B);
-                    Debug.WriteLine("");*/
 
                     Thread.Sleep(2000);
                 }
             }
 
+        }
+
+        public override void Dispose() {
         }
     }
 }

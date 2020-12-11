@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace LeagueBot.Patterns.Actions {
-    public abstract class PatternAction {
+    public abstract class PatternAction : IDisposable {
         private string Description {
             get;
             set;
@@ -25,5 +25,7 @@ namespace LeagueBot.Patterns.Actions {
         public override string ToString() {
             return string.Format("{0} Duration:{1}s", Description, Duration);
         }
+
+        public abstract void Dispose();
     }
 }

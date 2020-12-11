@@ -89,5 +89,8 @@ namespace LeagueBot.AI {
 
 
         }
+
+        public override void Dispose() {
+        }
     }
 }

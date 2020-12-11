@@ -4,18 +4,10 @@ using System.Threading;
 
 namespace LeagueBot.Patterns.Actions {
     public class WaitUntilProcessOpenAction : PatternAction {
-        private string ProcessName {
-            get;
-            set;
-        }
-        private Action TimeoutCallback {
-            get;
-            set;
-        }
-        private int Timeout {
-            get;
-            set;
-        }
+        
+        private string ProcessName;
+        private Action TimeoutCallback;
+        private int Timeout;
 
         public WaitUntilProcessOpenAction(string processName, string description, int timeout, Action timeoutCallback, double duration = 0) : base(description, duration) {
             this.ProcessName = processName;
@@ -34,6 +26,10 @@ namespace LeagueBot.Patterns.Actions {
                     break;
                 }
             }
+        }
+
+        public override void Dispose() {
+            TimeoutCallback = null;
         }
     }
 }

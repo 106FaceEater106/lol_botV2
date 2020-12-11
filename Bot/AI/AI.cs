@@ -3,7 +3,7 @@ using LeagueBot.Patterns;
 using System;
 
 namespace LeagueBot.AI {
-    public abstract class AbstractAI {
+    public abstract class AbstractAI : IDisposable {
         protected DateTime GameStartTime {
             get;
             set;
@@ -44,5 +44,6 @@ namespace LeagueBot.AI {
             GameStartTime = DateTime.Now;
         }
         public abstract void Stop();
+        public abstract void Dispose();
     }
 }

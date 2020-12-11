@@ -11,7 +11,7 @@
     <AssemblyName>Bot</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <Deterministic>false</Deterministic>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -63,15 +63,14 @@
     <Compile Include="Patterns\Actions\ExecuteAIAction.cs" />
     <Compile Include="Patterns\Actions\GetPlacmentTFT.cs" />
     <Compile Include="Patterns\Actions\LogAction.cs" />
-    <Compile Include="Patterns\Actions\MoveAction.cs" />
     <Compile Include="Patterns\Actions\PatternAction.cs" />
-    <Compile Include="Patterns\Actions\SleepAction.cs" />
     <Compile Include="Patterns\Actions\WaitForReconnect.cs" />
     <Compile Include="Patterns\Actions\WaitUntilColorAction.cs" />
     <Compile Include="Patterns\Actions\WaitUntilProcessFocusAction.cs" />
     <Compile Include="Patterns\Actions\WaitUntilProcessOpenAction.cs" />
     <Compile Include="Patterns\EndGamePatternTFT.cs" />
     <Compile Include="Patterns\MapPattern.cs" />
+    <Compile Include="Patterns\memTestPattern.cs" />
     <Compile Include="Patterns\Pattern.cs" />
     <Compile Include="Patterns\StartTFTPattern.cs" />
     <Compile Include="Patterns\TFT_MapPattern.cs" />

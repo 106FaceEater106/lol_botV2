@@ -4,10 +4,7 @@ using System.Diagnostics;
 namespace LeagueBot.Patterns.Actions {
     class LogAction : PatternAction {
 
-        protected string MSG {
-            get;
-            private set;
-        }
+        protected string MSG;
 
         public LogAction(string log, string description, Double duration = 0) : base(description, duration) {
             MSG = log;
@@ -16,6 +13,10 @@ namespace LeagueBot.Patterns.Actions {
         public override void Apply(Bot bot, Pattern pattern) {
             Console.WriteLine("LOG: " + MSG);
             Debug.WriteLine("LOG: " + MSG);
+        }
+
+        public override void Dispose() {
+            MSG = null;
         }
     }
 }

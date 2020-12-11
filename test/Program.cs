@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 
 using hotKey;
 using LeagueBot;
+using System.Reflection;
 
 namespace lol_bot_ligth {
     class Program {
@@ -16,6 +17,13 @@ namespace lol_bot_ligth {
         static bool to_exit = false;
 
         public static int Main() {
+
+            Assembly a = Assembly.LoadFrom("Bot.dll");
+            Version v = a.GetName().Version;
+
+            Console.WriteLine($"Client version: {LeagueBot.DEBUG.DBG.getVersion()}");
+            Console.WriteLine($"Bot version: {v.Major}.{v.Minor}.{v.Build}");
+
 
             #region SETUP_HOTKEY
             HotKeyManager.RegisterHotKey(Keys.F10, KeyModifiers.Alt);

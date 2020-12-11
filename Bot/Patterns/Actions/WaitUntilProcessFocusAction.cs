@@ -4,10 +4,9 @@ using System.Threading;
 
 namespace LeagueBot.Patterns.Actions {
     public class WaitUntilProcessFocusAction : PatternAction {
-        private string ProcessName {
-            get;
-            set;
-        }
+        
+        private string ProcessName;
+        
         public WaitUntilProcessFocusAction(string processName, string description, double duration = 0) : base(description, duration) {
             this.ProcessName = processName;
         }
@@ -22,6 +21,10 @@ namespace LeagueBot.Patterns.Actions {
                 catch {
                 }
             }
+        }
+
+        public override void Dispose() {
+            ProcessName = null;
         }
     }
 }
