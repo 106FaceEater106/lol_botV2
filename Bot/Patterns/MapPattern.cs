@@ -19,15 +19,12 @@ namespace LeagueBot.Patterns {
         {
         };
 
-        public abstract Side GetSide();
-
         public void StartAI() {
             AI.Start();
         }
         public override void OnProcessClosed() {
             AI.Stop();
             Thread.Sleep(8000);
-            //Bot.ApplyPattern(new EndGamePattern(Bot));
             base.OnProcessClosed();
         }
     }

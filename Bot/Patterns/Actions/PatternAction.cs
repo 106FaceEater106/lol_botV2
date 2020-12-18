@@ -26,6 +26,8 @@ namespace LeagueBot.Patterns.Actions {
             return string.Format("{0} Duration:{1}s", Description, Duration);
         }
 
-        public abstract void Dispose();
+        public virtual void Dispose() {
+            
+        }
     }
 }

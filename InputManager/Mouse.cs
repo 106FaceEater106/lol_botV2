@@ -27,7 +27,7 @@ namespace InputManager
 				{
 					result = (Mouse.GetSystemMetrics(23) == 1);
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					result = false;
 				}

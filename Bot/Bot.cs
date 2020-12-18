@@ -4,7 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.Diagnostics;
 
-
+using LeagueBot.LCU;
 using LeagueBot.AI;
 using LeagueBot.Event;
 using LeagueBot.DEBUG;
@@ -28,12 +28,16 @@ namespace LeagueBot {
         public bool isEvent = false;
         public Pattern nextPattern = null;
 
+
+
         public Bot() {
             GameEndEvent += on_game_end;
             GameEndEvent += DBG.on_game_end;
         }
 
-
+        public void init() {
+            clientLCU.init();
+        }
         public string getVersion() {
             Version v = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
             return v.ToString();
@@ -76,7 +80,7 @@ namespace LeagueBot {
         public void Abort(String stop_reson = "unknown reson") {
             if (Pattern != null) Pattern.Dispose();
             working = false;
-            DBG.log("BOT STOPED: " + stop_reson, DateTime.Now, "BOT");
+            DBG.log("BOT STOPED: " + stop_reson, MessageLevel.Info ,"BOT");
         }
         #endregion
 
@@ -102,7 +106,7 @@ namespace LeagueBot {
         private void on_game_end(object sender, EndGameData data) {
             string[] s = DBG.get_usage();
             foreach (string l in s) {
-                DBG.log(l, DateTime.Now, "BOT");
+                DBG.log(l, MessageLevel.Info ,"BOT");
             }
         }
         #endregion

@@ -47,7 +47,6 @@ namespace LeagueBot.AI {
                         if (px == ColorConstants.TFT_SURRENDER) {
                             mode = 1; //buy mode;
                             Keyboard.KeyPress(Keys.Escape);
-                            Console.WriteLine("LOG: BUING UNITS!");
                         }
                         break;
                     case 2:
@@ -77,9 +76,6 @@ namespace LeagueBot.AI {
                                 Keyboard.KeyPress(Keys.F);
                                 Thread.Sleep(10);
                             }
-                        } else {
-                            Console.WriteLine("NOT IN STORE");
-                            Debug.WriteLine(px.ToArgb());
                         }
                         break;
                 }

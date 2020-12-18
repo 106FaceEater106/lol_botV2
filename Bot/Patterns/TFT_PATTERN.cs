@@ -7,9 +7,5 @@ namespace LeagueBot.Patterns {
         }
 
         public override AbstractAI AI => new AI_TFT(Bot, this);
-
-        public override Side GetSide() {
-            return Side.TFT_FFA;
-        }
     }
 }

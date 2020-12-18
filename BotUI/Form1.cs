@@ -11,7 +11,9 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Diagnostics;
+using System.Configuration;
 
+using Bot;
 using BotUI.API;
 using LeagueBot;
 using LeagueBot.DEBUG;
@@ -20,7 +22,7 @@ using hotKey;
 namespace BotUI {
     public partial class Form1 : Form {
 
-        private Bot bot = new Bot();
+        private LeagueBot.Bot bot = new LeagueBot.Bot();
         private Thread botThread = null;
 
 
@@ -31,22 +33,26 @@ namespace BotUI {
         private void Form1_Load(object sender, EventArgs e) {
             Assembly a = Assembly.LoadFrom("Bot.dll");
             Version v = a.GetName().Version;
-            botVer.Text = $"Bot version: {v.ToString()}";
+            botVer.Text = $"Bot version: {v}";
 
             HotKeyManager.RegisterHotKey(Keys.F10, KeyModifiers.Alt);
             HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(stopButton_Click);
             //set_start_button();
 
+
             #if DEBUG
                 mode_lable.Text = "DEBUG MODE!";
                 DBG.openConsole();
+                BotConf.FilePath = ConfigurationManager.AppSettings.Get("LOL_FILE_PATH_DBG");
             #else
+                BotConf.FilePath = ConfigurationManager.AppSettings.Get("LOL_FILE_PATH");
                 mode_lable.Visible = false;
                 toolStrip1.Enabled = false;
             #endif
 
             DBG.init();
-            DBG.log("TEST LOG","BOT_UI");
+            bot.init();
+
 
         }
 
@@ -84,6 +90,10 @@ namespace BotUI {
         }
 
         private void startButton_Click(object sender, EventArgs e) {
+            //string r = LeagueBot.LCU.clientLCU.GetGamePhase().ToString();
+            //DBG.log(r);
+            //return;
+            
             if (botThread == null || !bot.working) {
                 botThread = new Thread(bot.ThreadProc);
                 botThread.Start();
@@ -91,7 +101,7 @@ namespace BotUI {
                 DialogResult res = MessageBox.Show("Bot migth be runing. force new start?","LOL BOT",MessageBoxButtons.YesNo);
                 if(res == DialogResult.Yes) {
                     bot.Abort();
-                    botThread.Abort();
+                    //botThread.Abort();
                     botThread = null;
                     botThread = new Thread(bot.ThreadProc);
                     botThread.Start();

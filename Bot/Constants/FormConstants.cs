@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace LeagueBot.Constants {
-    public static class FormConstants {
+    public static class FsormConstants {
         public static String[] chart_names = {
             "1 place",
             "2 place",

@@ -48,7 +48,6 @@ namespace LeagueBot.Patterns {
         }
 
         public void Execute(int i = 0) {
-            Console.WriteLine("pattern start");
             I = i;
             while (I < Actions.Length) {
                 if (Disposed) {

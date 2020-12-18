@@ -33,12 +33,6 @@ namespace LeagueBot.AI {
         public AbstractAI(Bot bot, MapPattern pattern = null) {
             this.Bot = bot;
             this.Pattern = pattern;
-            //this.Summoner = new Summoner(bot);
-            if (pattern != null) {
-                this.Side = Pattern.GetSide();
-            } else {
-                this.Side = Side.TFT_FFA;
-            }
         }
         public virtual void Start() {
             GameStartTime = DateTime.Now;
