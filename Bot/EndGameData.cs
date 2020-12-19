@@ -7,5 +7,6 @@ namespace LeagueBot.Event {
     public class EndGameData : EventArgs {
         public int place;
         public string sender;
+        public int GameLength;
     }
 }

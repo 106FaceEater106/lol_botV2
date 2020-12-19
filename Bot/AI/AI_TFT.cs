@@ -26,11 +26,25 @@ namespace LeagueBot.AI {
             Thread.Sleep(3000);
             int mode = 99;
             DateTime lastBuy = DateTime.Now;
+
+            int fail_bring_to_front = 0;
+            
             while (true) {
                 Color px;
                 Thread.Sleep(5000);
-                Pattern.BringProcessToFront();
-                Pattern.CenterProcessMainWindow();
+                
+                try {
+                    Pattern.BringProcessToFront();
+                    Pattern.CenterProcessMainWindow();
+                    fail_bring_to_front = 0;
+                } catch {
+                    fail_bring_to_front++;
+                }
+
+                if (fail_bring_to_front > 10) {
+                    Bot.Abort();
+                    return;
+                }
 
                 px = Interop.GetPixelColor(PixelsConstants.DEAT_EXIT_BUTTON);
                 if (px == ColorConstants.DEAT_EXIT_BUTTON) {

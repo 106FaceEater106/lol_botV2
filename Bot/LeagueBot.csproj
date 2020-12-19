@@ -71,6 +71,7 @@
     <Compile Include="DEBUG\DBG.cs" />
     <Compile Include="EndGameData.cs" />
     <Compile Include="LCU\Enums.cs" />
+    <Compile Include="LCU\LCUhelpers.cs" />
     <Compile Include="Patterns\Actions\AcceptQue.cs" />
     <Compile Include="Patterns\Actions\AcceptStuff.cs" />
     <Compile Include="Patterns\Actions\ClickAction.cs" />
@@ -79,7 +80,9 @@
     <Compile Include="Patterns\Actions\ExecuteAIAction.cs" />
     <Compile Include="Patterns\Actions\GetPlacmentTFT.cs" />
     <Compile Include="Patterns\Actions\LogAction.cs" />
+    <Compile Include="Patterns\Actions\MakeLobyAction.cs" />
     <Compile Include="Patterns\Actions\PatternAction.cs" />
+    <Compile Include="Patterns\Actions\StartQueAction.cs" />
     <Compile Include="Patterns\Actions\suicide.cs" />
     <Compile Include="Patterns\Actions\WaitForReconnect.cs" />
     <Compile Include="Patterns\Actions\WaitUntilColorAction.cs" />

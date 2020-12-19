@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputManager", "InputManager\InputManager.csproj", "{F6B36EEB-C2CA-4F13-B2C1-3CD0294530F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot", "Bot\Bot.csproj", "{58796931-7E6E-4F59-91C9-5DB672A16B6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeagueBot", "Bot\LeagueBot.csproj", "{58796931-7E6E-4F59-91C9-5DB672A16B6F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InputManegerV2", "InputManegerV2\InputManegerV2.vcxproj", "{9B048AE7-9E2B-4AF8-9FDA-741D20C5BB93}"
 EndProject

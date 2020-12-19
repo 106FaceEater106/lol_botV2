@@ -12,9 +12,10 @@ namespace LeagueBot.LCU {
     public enum gameFlowPhase {
         None,
         Lobby,
+        EndOfGame,
         InProgress,
         Matchmaking,
         ReadyCheck,
-        WaitingForStats
+        WaitingForStats,
     }
 }

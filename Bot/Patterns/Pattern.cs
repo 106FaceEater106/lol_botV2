@@ -55,7 +55,6 @@ namespace LeagueBot.Patterns {
                 }
                 if (!Interop.IsProcessOpen(ProcessName)) {
                     OnProcessClosed();
-                    return;
                 }
                 try {
                     BringProcessToFront();

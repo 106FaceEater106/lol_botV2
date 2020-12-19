@@ -1,47 +1,37 @@
 ﻿using LeagueBot.Constants;
 using LeagueBot.DEBUG;
-using LeagueBot.Windows;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Threading;
+
+using LeagueBot.LCU;
 
 namespace LeagueBot.Patterns.Actions {
     class AcceptQue : PatternAction {
 
-        public AvailableGameType mode;
-
-        public AcceptQue(AvailableGameType mode, string description) : base(description, 0) {
-            this.mode = mode;
+        public AcceptQue() : base("Waiting for match") {
         }
 
         public override void Apply(Bot bot, Pattern pattern) {
 
-            bool que_done = false;
             DateTime start = DateTime.Now;
+            gameFlowPhase state;
 
-            while (!que_done) {
-                pattern.BringProcessToFront();
-                pattern.CenterProcessMainWindow();
-                var px = Interop.GetPixelColor(PixelsConstants.ACCEPT_MATCH_BUTTON);
+            do {
+                state = clientLCU.GetGamePhase();
 
-                double que_time_sec = DateTime.Now.Subtract(start).TotalSeconds;
-
-                if (que_time_sec >= 500) {
-                    bot.Abort("To long que time");
-                    return;
-                }
-
-                if (px == ColorConstants.ACC_BUTTON && DBG.Accept) {
-                    bot.LeftClick(PixelsConstants.ACCEPT_MATCH_BUTTON);
-                    bot.LeftClick(PixelsConstants.PLAY_BUTTON, true);
-                    Thread.Sleep(1000);
-
+                if (state == gameFlowPhase.ReadyCheck) {
+                    clientLCU.AcceptMatch();
+                    Thread.Sleep(5000);
                 } else {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                 }
-
-                que_done = Interop.IsProcessOpen(LeagueConstants.LoL_GAME_PROCESS);
-
-            }
+            } while(state != gameFlowPhase.InProgress);
+            
+            DBG.log($"Was in que {(DateTime.Now.Subtract(start)).TotalSeconds}s");
         }
 
         public override void Dispose() {

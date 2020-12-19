@@ -2,6 +2,7 @@
 using System.IO;
 using System.Data;
 using System.Drawing;
+using System.Threading;
 using System.Diagnostics;
 
 using LeagueBot.LCU;
@@ -16,7 +17,6 @@ using InputManager;
 namespace LeagueBot {
     public class Bot {
 
-
         public event EventHandler<EndGameData> GameEndEvent;
 
         private Pattern Pattern;
@@ -25,18 +25,22 @@ namespace LeagueBot {
         public const Int32 buy_delay = 500;
         public String status; //TODO: REMOVE
         public bool working;
+        public bool isReady = false;
         public bool isEvent = false;
         public Pattern nextPattern = null;
 
-
-
         public Bot() {
-            GameEndEvent += on_game_end;
             GameEndEvent += DBG.on_game_end;
         }
 
         public void init() {
-            clientLCU.init();
+            do {
+                isReady = clientLCU.init();
+                Thread.Sleep(500);
+            } while (!isReady);
+            
+            BotConst.accountId = clientLCU.getAccountId();
+            DBG.log($"Set account id to: {BotConst.accountId}");
         }
         public string getVersion() {
             Version v = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
@@ -47,7 +51,7 @@ namespace LeagueBot {
         public void Start(AvailableGameType gameType = AvailableGameType.TFT) {
             DBG.log("Starting bot");
 
-            switch (gameType) {
+            switch(gameType) {
                 case AvailableGameType.TFT:
                     ApplyPattern(new StartTFTPattern(this));
                     break;
@@ -77,10 +81,10 @@ namespace LeagueBot {
             DBG.log("All patterns done!");
         }
         
-        public void Abort(String stop_reson = "unknown reson") {
+        public void Abort(String stop_reson = "unknown reson", MessageLevel lvl = MessageLevel.Info) {
             if (Pattern != null) Pattern.Dispose();
             working = false;
-            DBG.log("BOT STOPED: " + stop_reson, MessageLevel.Info ,"BOT");
+            DBG.log("BOT STOPED: " + stop_reson, lvl ,"BOT");
         }
         #endregion
 
@@ -101,13 +105,6 @@ namespace LeagueBot {
         #region EVENTS
         public void invoke_tft_game_end(object s, EndGameData data) {
             GameEndEvent?.Invoke(s, data);
-        }
-
-        private void on_game_end(object sender, EndGameData data) {
-            string[] s = DBG.get_usage();
-            foreach (string l in s) {
-                DBG.log(l, MessageLevel.Info ,"BOT");
-            }
         }
         #endregion
     }

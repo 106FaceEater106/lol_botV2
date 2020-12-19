@@ -12,8 +12,11 @@ using Newtonsoft.Json;
 using Leaf.xNet;
 
 using Bot;
-using Bot.Constants;
+using LeagueBot.Constants;
+
+using LeagueBot.Event;
 using LeagueBot.DEBUG;
+using System.Reflection;
 
 namespace LeagueBot.LCU {
     public class clientLCU {
@@ -29,11 +32,14 @@ namespace LeagueBot.LCU {
         private static string AcceptUrl => urlBase + "lol-matchmaking/v1/ready-check/accept";
         private static string GamePhaseUrl => urlBase + "lol-gameflow/v1/gameflow-phase";
         private static string GameflowAvailabilityUrl => urlBase + "lol-gameflow/v1/availability";
+        private static string SearchURL => urlBase + "lol-lobby/v2/lobby/matchmaking/search";
+        private static string getEndGameDataUrl => urlBase + "lol-end-of-game/v1/gameclient-eog-stats-block";
+        private static string getSessionUrl => urlBase + "lol-login/v1/session";
 
         #endregion
 
         #region SETUP
-        public static void init() {
+        public static bool init() {
             string path = Path.Combine(BotConf.FilePath, @"League of Legends\lockfile");
             using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
                 using (var streamReader = new StreamReader(fileStream, Encoding.Default)) {
@@ -49,15 +55,20 @@ namespace LeagueBot.LCU {
 
 
             if (Port == 0) {
-                DBG.log("Unable to initialize ClientLCU.cs (unable to read Api port from process)", MessageLevel.Critical);
+                DBG.log("Unable to initialize ClientLCU.cs (unable to read API port from process)", MessageLevel.Critical);
+                return false;
             }
-
+            
+            if(!IsApiReady()) {
+                DBG.log("Unable to initialize ClientLCU.cs (unable to get data from API)", MessageLevel.Critical);
+                return false;
+            }
+            return true;
         }
 
         public static bool IsApiReady() {
             using (HttpRequest request = CreateRequest()) {
                 try {
-                    DBG.log(GameflowAvailabilityUrl);
                     var response = request.Get(GameflowAvailabilityUrl);
 
                     if (response.StatusCode == HttpStatusCode.OK) {
@@ -78,9 +89,6 @@ namespace LeagueBot.LCU {
         public static bool CreateLobby(QueTypes queueId) {
             using (var request = CreateRequest()) {
                 string response = request.Post(CreateLobbyUrl, $"{{\"queueId\": {(int)queueId} }}", "application/json").StatusCode.ToString();
-
-                DBG.log($"{{\"queueId\": {(int)queueId} }}");
-                DBG.log(response.ToString());
 
                 if (response == "OK") {
                     return true;
@@ -104,7 +112,54 @@ namespace LeagueBot.LCU {
             }
         }
 
+        public static bool StartSearch() {
+            using (var request = CreateRequest()) {
+                string response = request.Post(SearchURL).ToString();
+
+                if (response == string.Empty) {
+                    return true;
+                } else {
+                    DBG.log("Failt to start search", MessageLevel.Critical, "clientLCU");
+                    return false;
+                }
+            }
+        }
+
         #endregion
+
+        public static long getAccountId() {
+            using (HttpRequest req = CreateRequest()) {
+                HttpResponse res = req.Get(getSessionUrl);
+                if (res.StatusCode == HttpStatusCode.OK) {
+                    dynamic obj = JsonConvert.DeserializeObject(res.ToString());
+                    return obj.accountId;
+                }
+                return -99;
+            }
+        }
+
+        public static EndGameData getEndGameData() {
+            EndGameData o = new EndGameData();
+            using(HttpRequest req = CreateRequest()) {
+                HttpResponse res = req.Get(getEndGameDataUrl);
+                if (res.StatusCode == HttpStatusCode.OK) {
+                    EOGData obj = JsonConvert.DeserializeObject<EOGData>(res.ToString());
+
+                    int place = -99;
+
+                    foreach(Player p in obj.statsBlock.players) {
+                        if(p.playerId == BotConst.accountId) {
+                            place = p.ffaStanding;
+                        }
+                    }
+
+                    o.place = place;
+                    o.GameLength = obj.statsBlock.gameLengthSeconds;
+                }
+            }
+            return o;
+        }
+        
 
         private static HttpRequest CreateRequest() {
             HttpRequest request = new HttpRequest();

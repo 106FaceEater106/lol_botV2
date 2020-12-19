@@ -16,6 +16,7 @@ using System.Configuration;
 using Bot;
 using BotUI.API;
 using LeagueBot;
+using LeagueBot.LCU;
 using LeagueBot.DEBUG;
 using hotKey;
 
@@ -44,15 +45,20 @@ namespace BotUI {
                 mode_lable.Text = "DEBUG MODE!";
                 DBG.openConsole();
                 BotConf.FilePath = ConfigurationManager.AppSettings.Get("LOL_FILE_PATH_DBG");
-            #else
+#else
                 BotConf.FilePath = ConfigurationManager.AppSettings.Get("LOL_FILE_PATH");
                 mode_lable.Visible = false;
                 toolStrip1.Enabled = false;
-            #endif
+#endif
 
-            DBG.init();
-            bot.init();
 
+            Task t = Task.Run(() => {
+                DBG.init();
+                DBG.log("DBG INIT DONE");
+                bot.init();
+                startButton.Invoke(new Action(() => startButton.Enabled = true));
+            });
+            
 
         }
 
@@ -90,10 +96,7 @@ namespace BotUI {
         }
 
         private void startButton_Click(object sender, EventArgs e) {
-            //string r = LeagueBot.LCU.clientLCU.GetGamePhase().ToString();
-            //DBG.log(r);
-            //return;
-            
+
             if (botThread == null || !bot.working) {
                 botThread = new Thread(bot.ThreadProc);
                 botThread.Start();
