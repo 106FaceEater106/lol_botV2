@@ -11,4 +11,10 @@
     <ProjectReference Include="..\Bot\LeagueBot.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="README.MD">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

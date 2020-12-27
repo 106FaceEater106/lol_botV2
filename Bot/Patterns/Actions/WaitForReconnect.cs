@@ -13,10 +13,22 @@ namespace LeagueBot.Patterns.Actions {
 
         public override void Apply(Bot bot, Pattern pattern) {
             gameFlowPhase state;
+
+            int WaitForStats = 0;
+
             do {
                 state = clientLCU.GetGamePhase();
                 Thread.Sleep(1000);
-            } while(state != gameFlowPhase.WaitingForStats);
+
+                if (WaitForStats >= 10) {
+                    DBG.log("Wait to long for stats");
+                    break;
+                } else if(state == gameFlowPhase.WaitingForStats) {
+                    WaitForStats++;
+                    Thread.Sleep(1000);
+                }
+
+            } while(state == gameFlowPhase.WaitingForStats);
             
         }
     }

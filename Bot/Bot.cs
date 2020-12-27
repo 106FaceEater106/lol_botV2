@@ -34,11 +34,8 @@ namespace LeagueBot {
         }
 
         public void init() {
-            do {
-                isReady = clientLCU.init();
-                Thread.Sleep(500);
-            } while (!isReady);
-            
+            isReady = clientLCU.init();
+            Thread.Sleep(500);
             BotConst.accountId = clientLCU.getAccountId();
             DBG.log($"Set account id to: {BotConst.accountId}");
         }
@@ -49,8 +46,7 @@ namespace LeagueBot {
 
         #region Controll
         public void Start(AvailableGameType gameType = AvailableGameType.TFT) {
-            DBG.log("Starting bot");
-
+            working = true;
             switch(gameType) {
                 case AvailableGameType.TFT:
                     ApplyPattern(new StartTFTPattern(this));
@@ -72,11 +68,10 @@ namespace LeagueBot {
         public void ApplyPattern(Pattern p, int i = 0) {
             Pattern = p;
             do {
-                Pattern.Execute();
-                Pattern.Dispose();
+                Pattern.ExecuteV2();
+                //Pattern.Dispose();
                 Pattern = nextPattern;
                 nextPattern = null;
-
             } while(Pattern != null);
             DBG.log("All patterns done!");
         }

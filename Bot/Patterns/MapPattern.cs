@@ -1,30 +1,30 @@
 ﻿using LeagueBot.AI;
 using LeagueBot.Constants;
 using LeagueBot.Patterns.Actions;
+using System;
+using System.Security;
 using System.Threading;
 
 namespace LeagueBot.Patterns {
     public abstract class MapPattern : Pattern {
-        public abstract AbstractAI AI {
-            get;
-        }
+
+
+        protected baseAI AI;
 
         public MapPattern(Bot bot) : base(bot) {
         }
 
 
-        public override string ProcessName => LeagueConstants.LoL_GAME_PROCESS;
+        public override string ProcessName => BotConst.LoL_GAME_PROCESS;
+        public override PatternAction[] Actions => new PatternAction[] {};
 
-        public override PatternAction[] Actions => new PatternAction[]
-        {
-        };
-
+        [Obsolete]
         public void StartAI() {
-            AI.Start();
+            AI.Execute();
         }
+
         public override void OnProcessClosed() {
-            AI.Stop();
-            Thread.Sleep(8000);
+            AI.stop();
             base.OnProcessClosed();
         }
     }

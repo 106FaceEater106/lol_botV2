@@ -13,8 +13,7 @@ namespace LeagueBot.Patterns.Actions {
 
             do {
 
-                pattern.BringProcessToFront();
-                pattern.CenterProcessMainWindow();
+                pattern.CenterWindow();
                 var px = Interop.GetPixelColor(PixelsConstants.ACCEPT_LOOT);
                 if (px == ColorConstants.ACCEPT_LOOT) {
                     bot.LeftClick(PixelsConstants.ACCEPT_LOOT);

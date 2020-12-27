@@ -25,16 +25,16 @@ namespace LeagueBot.LCU {
 
         private static int Port;
         private static string urlBase => "https://127.0.0.1:" + Port + "/";
-        
+
         #region API_PATHS
-        
+
         private static string CreateLobbyUrl => urlBase + "lol-lobby/v2/lobby";
         private static string AcceptUrl => urlBase + "lol-matchmaking/v1/ready-check/accept";
         private static string GamePhaseUrl => urlBase + "lol-gameflow/v1/gameflow-phase";
         private static string GameflowAvailabilityUrl => urlBase + "lol-gameflow/v1/availability";
         private static string SearchURL => urlBase + "lol-lobby/v2/lobby/matchmaking/search";
         private static string getEndGameDataUrl => urlBase + "lol-end-of-game/v1/gameclient-eog-stats-block";
-        private static string getSessionUrl => urlBase + "lol-login/v1/session";
+        public static string getSessionUrl => urlBase + "lol-login/v1/session";
 
         #endregion
 
@@ -161,13 +161,14 @@ namespace LeagueBot.LCU {
         }
         
 
-        private static HttpRequest CreateRequest() {
+        public static HttpRequest CreateRequest() {
             HttpRequest request = new HttpRequest();
             request.IgnoreProtocolErrors = true;
             request.ConnectTimeout = BotConst.HttpRequestTimeout;
             request.ReadWriteTimeout = BotConst.HttpRequestTimeout;
             request.CharacterSet = BotConst.HttpRequestEncoding;
             request.AddHeader("Authorization", "Basic " + auth);
+            request.AcceptEncoding = "application/json";
             return request;
         }
     }

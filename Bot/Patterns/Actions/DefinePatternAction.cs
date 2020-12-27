@@ -5,6 +5,7 @@
 
         public DefinePatternAction(Pattern pattern, string description, double duration = 0) : base(description, duration) {
             this.Pattern = pattern;
+            needWindowHelp = false;
         }
 
         public override void Apply(Bot bot, Pattern pattern) {

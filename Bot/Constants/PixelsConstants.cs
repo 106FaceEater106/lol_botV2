@@ -133,7 +133,7 @@ namespace LeagueBot.Constants {
 
         public static Point TFT_SURRENDER = new Point(784, 862).Resize(GAME_RESOLUTION);
         public static Point TFT_SURRENDER2 = new Point(917, 593).Resize(GAME_RESOLUTION);
-        public static Point DEAT_EXIT_BUTTON = new Point(848, 530).Resize(GAME_RESOLUTION);
+        public static Point DEAT_EXIT_BUTTON = new Point(865, 559).Resize(GAME_RESOLUTION);
 
         public static Point[] BUY_UNIT = {
             new Point(693, 871).Resize(GAME_RESOLUTION),

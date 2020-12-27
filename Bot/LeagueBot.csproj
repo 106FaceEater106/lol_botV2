@@ -7,7 +7,7 @@
     <ProjectGuid>{58796931-7E6E-4F59-91C9-5DB672A16B6F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bot</RootNamespace>
+    <RootNamespace>LeagueBot</RootNamespace>
     <AssemblyName>Bot</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -56,8 +56,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\AI.cs" />
-    <Compile Include="AI\AI_TFT.cs" />
+    <Compile Include="AI\Actions\ActionSet.cs" />
+    <Compile Include="AI\Actions\baseAction.cs" />
+    <Compile Include="AI\baseAI.cs" />
+    <Compile Include="AI\State.cs" />
+    <Compile Include="AI\TFT_AI.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="conf.cs" />
     <Compile Include="Constants\BotConstant.cs" />
@@ -66,11 +69,11 @@
     <Compile Include="Constants\ClickType.cs" />
     <Compile Include="Constants\ColorConstants.cs" />
     <Compile Include="Constants\FormConstants.cs" />
-    <Compile Include="Constants\LeagueConstants.cs" />
     <Compile Include="Constants\PixelsConstants.cs" />
     <Compile Include="DEBUG\DBG.cs" />
     <Compile Include="EndGameData.cs" />
     <Compile Include="LCU\Enums.cs" />
+    <Compile Include="LCU\gameLCU.cs" />
     <Compile Include="LCU\LCUhelpers.cs" />
     <Compile Include="Patterns\Actions\AcceptQue.cs" />
     <Compile Include="Patterns\Actions\AcceptStuff.cs" />
@@ -94,7 +97,6 @@
     <Compile Include="Patterns\Pattern.cs" />
     <Compile Include="Patterns\StartTFTPattern.cs" />
     <Compile Include="Patterns\TFT_MapPattern.cs" />
-    <Compile Include="Patterns\TFT_PATTERN.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Windows\ApplicationCapture.cs" />
     <Compile Include="Windows\AsyncRandom.cs" />

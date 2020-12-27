@@ -26,8 +26,7 @@ namespace LeagueBot.Patterns.Actions {
         public override void Apply(Bot bot, Pattern pattern) {
             bool valid = false;
             while (!valid) {
-                pattern.BringProcessToFront();
-                pattern.CenterProcessMainWindow();
+                pattern.CenterWindow();
                 var px = Interop.GetPixelColor(Point);
                 if (px.R == Color.R && px.G == Color.G && px.B == Color.B) {
                     valid = true;

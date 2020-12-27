@@ -13,7 +13,7 @@ namespace LeagueBot.Patterns.Actions {
         int loby_time_out = 120;
 
         public StartQueAction() : base("Starting que") {
-
+            needWindowHelp = false;
         }
         
         public override void Apply(Bot bot, Pattern pattern) {
@@ -26,7 +26,6 @@ namespace LeagueBot.Patterns.Actions {
                 if (DateTime.Now.Subtract(start).TotalSeconds > loby_time_out) {
                     bot.Abort("Wait to long for loby to be ready", DEBUG.MessageLevel.Critical);
                 }
-                DBG.log(state.ToString());
             } while (state != gameFlowPhase.Lobby && state != gameFlowPhase.InProgress);
             
             if(state == gameFlowPhase.InProgress) {

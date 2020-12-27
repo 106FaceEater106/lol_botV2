@@ -9,7 +9,9 @@ using LeagueBot.LCU;
 namespace LeagueBot.Patterns.Actions {
     class MakeLobyAction : PatternAction {
 
+
         public MakeLobyAction() : base("Making tft loby") {
+            needWindowHelp = false;
         }
 
         public override void Apply(Bot bot, Pattern pattern) {

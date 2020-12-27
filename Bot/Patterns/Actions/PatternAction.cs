@@ -6,24 +6,25 @@ namespace LeagueBot.Patterns.Actions {
             get;
             set;
         }
+        
+        [Obsolete("if a action need a deley build it in")]
         public double Duration {
             get;
             set;
         }
-        public String Status {
-            get;
-            set;
-        }
+
+        public bool needWindowHelp = true;
+
         public PatternAction(string description, double duration = 0) {
             Description = description;
             Duration = duration;
-            Status = this.ToString();
+            //Status = this.ToString();
 
         }
         public abstract void Apply(Bot bot, Pattern pattern);
 
         public override string ToString() {
-            return string.Format("{0} Duration:{1}s", Description, Duration);
+            return Description;
         }
 
         public virtual void Dispose() {

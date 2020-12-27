@@ -13,7 +13,7 @@ namespace LeagueBot.Patterns {
         public override PatternAction[] Actions => new PatternAction[]
         {
             new LogAction("Test","LOG"),
-            new DefinePatternAction(new memTestPattern(Bot),"",0),
+            new DefinePatternAction(new memTestPattern(bot),"",0),
         };
     }
 }

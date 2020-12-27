@@ -27,8 +27,7 @@ namespace LeagueBot.Patterns.Actions {
         public override void Apply(Bot bot, Pattern pattern) {
             bool valid = false;
             while (!valid) {
-                pattern.BringProcessToFront();
-                pattern.CenterProcessMainWindow();
+                pattern.CenterWindow();
                 var px = Interop.GetPixelColor(Point);
 
 

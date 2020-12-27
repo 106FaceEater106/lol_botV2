@@ -8,7 +8,7 @@ namespace LeagueBot.Patterns {
         public EndGamePatternTFT(Bot bot) : base(bot) {
         }
 
-        public override string ProcessName => LeagueConstants.LoL_LAUNCHER_PROCESS;
+        public override string ProcessName => BotConst.LoL_LAUNCHER_PROCESS;
 
         public override PatternAction[] Actions => new PatternAction[]
         {
@@ -17,7 +17,7 @@ namespace LeagueBot.Patterns {
             new GetPlacmentTFT("Looking for placement",0),
             //new ClickAction(ClickType.LEFT, PixelsConstants.LEVELUP_BUTTON,"LevelUp!",5),
             //new ClickAction(ClickType.LEFT, PixelsConstants.LEAVE_BUTTON, "Leave Game",3),
-            new DefinePatternAction(new StartTFTPattern(Bot), "Executing Pattern : TFT", 2)
+            new DefinePatternAction(new StartTFTPattern(bot), "Executing Pattern : TFT", 2)
         };
     }
 }

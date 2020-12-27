@@ -43,19 +43,23 @@ namespace BotUI {
 
             #if DEBUG
                 mode_lable.Text = "DEBUG MODE!";
-                DBG.openConsole();
+                DBG.isDBG = true;
                 BotConf.FilePath = ConfigurationManager.AppSettings.Get("LOL_FILE_PATH_DBG");
-#else
+            #else
                 BotConf.FilePath = ConfigurationManager.AppSettings.Get("LOL_FILE_PATH");
                 mode_lable.Visible = false;
                 toolStrip1.Enabled = false;
-#endif
+            #endif
 
+            if(ConfigurationManager.AppSettings.Get("Read me") == "NOPE" && !DBG.isDBG) {
+                MessageBox.Show("Read README.MD", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+            }
 
             Task t = Task.Run(() => {
                 DBG.init();
-                DBG.log("DBG INIT DONE");
                 bot.init();
+                DBG.log("DBG INIT DONE");
                 startButton.Invoke(new Action(() => startButton.Enabled = true));
             });
             

@@ -10,36 +10,29 @@ using System.Data;
 
 namespace LeagueBot.Patterns {
     public abstract class Pattern : IDisposable {
+        
         public virtual string ProcessName {
             get;
         }
-        public virtual PatternAction[] Actions {
-            get;
-            set;
-        }
-        private int I {
-            get;
-            set;
-        }
-        protected Bot Bot {
-            get;
-            private set;
-        }
+
+        public virtual PatternAction[] Actions { get; set; }
+        
+        //[Obsolete]
+        //protected Bot Bot { get; private set; }
+        protected Bot bot { get; private set; }
+
+        protected bool Disposed { get; private set; }
+
+
         public Pattern(Bot bot) {
-            this.Bot = bot;
+            this.bot = bot;
         }
 
-        protected bool Disposed {
-            get;
-            private set;
-        }
         public virtual void Initialize() {
-            BringProcessToFront();
+            CenterWindow();
         }
-        public void BringProcessToFront() {
+        public void CenterWindow() {
             Interop.BringWindowToFront(ProcessName);
-        }
-        public void CenterProcessMainWindow() {
             Interop.CenterProcessWindow(ProcessName);
         }
 
@@ -47,9 +40,10 @@ namespace LeagueBot.Patterns {
 
         }
 
-        public void Execute(int i = 0) {
-            I = i;
-            while (I < Actions.Length) {
+        [Obsolete]
+        public void Execute(int start_index = 0) {
+            int i = start_index;
+            while (i < Actions.Length) {
                 if (Disposed) {
                     return;
                 }
@@ -57,19 +51,48 @@ namespace LeagueBot.Patterns {
                     OnProcessClosed();
                 }
                 try {
-                    BringProcessToFront();
-                    CenterProcessMainWindow();
-                    DBG.log("(" + this.GetType().Name + "): " + Actions[I].ToString());
-                    Actions[I].Apply(Bot, this);
-                    Thread.Sleep((int)(Actions[I].Duration * 1000));
-                    Actions[I] = null;
-                    I++;
+
+                    CenterWindow();
+
+                    DBG.log("(" + this.GetType().Name + "): " + Actions[i].ToString());
+                    Actions[i].Apply(bot, this);
+                    Thread.Sleep((int)(Actions[i].Duration * 1000));
+                    Actions[i] = null;
+                    i++;
                 }
                 catch (Exception ex) {
                     Console.WriteLine(ex);
                 }
             }
-            I = 0;
+        }
+
+        public void ExecuteV2() {
+            int actionIndex = 0;
+
+            while(actionIndex < Actions.Length) {
+                
+                if(Disposed) {
+                    DBG.log("Patter is disposed while runing", MessageLevel.Warning);
+                    return;
+                } // TODO: add pause
+
+                if(!Interop.IsProcessOpen(ProcessName)) {
+                    this.OnProcessClosed();
+                }
+                
+                PatternAction action = Actions[actionIndex];
+                DBG.log("(" + this.GetType().Name + "): " + action.ToString());
+                
+                if(action.needWindowHelp) {
+                    try {
+                        CenterWindow();
+                    } catch {
+                        DBG.log("Faild to center window", MessageLevel.Warning);
+                    }
+                }
+                action.Apply(bot, this);
+                actionIndex++;
+            }
         }
 
         public virtual void Dispose() {
