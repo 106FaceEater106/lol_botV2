@@ -21,8 +21,17 @@ namespace LeagueBot.Patterns.Actions {
         }
 
         public override void Apply(Bot bot, Pattern pattern = null) {
-            EndGameData data = clientLCU.getEndGameData();
-            bot.invoke_tft_game_end(this,data);
+
+            if(clientLCU.GetGamePhase() == gameFlowPhase.EndOfGame) {
+                EndGameData data = clientLCU.getEndGameData();
+                bot.invoke_tft_game_end(this,data);
+            } else {
+                EndGameData data = new EndGameData();
+                data.place = -99;
+                data.sender = "get place";
+                data.GameLength = -99;
+            }
+
         }
 
         public override void Dispose() {
