@@ -14,6 +14,7 @@ namespace LeagueBot.LCU {
         Lobby,
         EndOfGame,
         InProgress,
+        ChampSelect,
         Matchmaking,
         ReadyCheck,
         WaitingForStats,

@@ -80,6 +80,9 @@ namespace LeagueBot {
             if (Pattern != null) Pattern.Dispose();
             working = false;
             DBG.log("BOT STOPED: " + stop_reson, lvl ,"BOT");
+            if(stop_reson == "unknown reson") {
+                DBG.log($"{Environment.StackTrace}");
+            }
         }
         #endregion
 

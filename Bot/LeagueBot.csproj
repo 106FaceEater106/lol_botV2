@@ -108,10 +108,6 @@
       <Project>{f6b36eeb-c2ca-4f13-b2c1-3cd0294530f2}</Project>
       <Name>InputManager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InputManegerV2\InputManegerV2.vcxproj">
-      <Project>{9b048ae7-9e2b-4af8-9fda-741d20c5bb93}</Project>
-      <Name>InputManegerV2</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
