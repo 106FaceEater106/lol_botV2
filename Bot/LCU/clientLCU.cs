@@ -34,7 +34,8 @@ namespace LeagueBot.LCU {
         private static string GameflowAvailabilityUrl => urlBase + "lol-gameflow/v1/availability";
         private static string SearchURL => urlBase + "lol-lobby/v2/lobby/matchmaking/search";
         private static string getEndGameDataUrl => urlBase + "lol-end-of-game/v1/gameclient-eog-stats-block";
-        public static string getSessionUrl => urlBase + "lol-login/v1/session";
+        private static string skitWaitForStatsUrl => urlBase + "lol-end-of-game/v1/state/dismiss-stats";
+        private static string getSessionUrl => urlBase + "lol-login/v1/session";
 
         #endregion
 
@@ -160,6 +161,11 @@ namespace LeagueBot.LCU {
             return o;
         }
         
+        public static void skipWaitForStats() {
+            using (HttpRequest req = CreateRequest()) {
+                req.Post(skitWaitForStatsUrl);
+            }
+        }
 
         public static HttpRequest CreateRequest() {
             HttpRequest request = new HttpRequest();

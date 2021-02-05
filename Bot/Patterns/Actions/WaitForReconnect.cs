@@ -20,6 +20,8 @@ namespace LeagueBot.Patterns.Actions {
                 if((DateTime.Now-start).TotalSeconds > 60*5) {
                     bot.Abort("Wait to long for stats",MessageLevel.Critical);
                     break;
+                } else if((DateTime.Now - start).TotalSeconds > 60) {
+                    clientLCU.skipWaitForStats();
                 }
 
             } while(state == gameFlowPhase.WaitingForStats);
