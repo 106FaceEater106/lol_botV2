@@ -103,6 +103,15 @@ namespace LeagueBot.Windows {
         }
         [DllImport("user32.dll")]
         public static extern IntPtr GetDC(IntPtr hwnd);
+        
+        [DllImport("user32.dll")]
+        private static extern int SetForegroundWindow(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
+        
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorPos(out POINT lpPoint);
 
         [DllImport("user32.dll")]
         public static extern Int32 ReleaseDC(IntPtr hwnd, IntPtr hdc);
@@ -131,17 +140,12 @@ namespace LeagueBot.Windows {
         /// Retrieves the cursor's position, in screen coordinates.
         /// </summary>
         /// <see>See MSDN documentation for further information.</see>
-        [DllImport("user32.dll")]
-        private static extern bool GetCursorPos(out POINT lpPoint);
 
         public static Point GetMousePosition() {
             POINT lpPoint;
             GetCursorPos(out lpPoint);
             return lpPoint;
         }
-
-        [DllImport("user32.dll")]
-        private static extern int SetForegroundWindow(IntPtr hwnd);
 
 
         private enum ShowWindowEnum {
@@ -151,12 +155,23 @@ namespace LeagueBot.Windows {
             Minimize = 6, ShowMinNoActivate = 7, ShowNoActivate = 8,
             Restore = 9, ShowDefault = 10, ForceMinimized = 11
         };
+
+        [Obsolete]
         public static bool IsProcessOpen(string name) {
             return Process.GetProcessesByName(name).Length > 0;
         }
 
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
+
+        public static bool ProcessHasWindow(string name) {
+            Process[] s = Process.GetProcessesByName(name);
+
+            if(s.Length > 0) {
+                return s[0].MainWindowHandle != IntPtr.Zero;  
+            } else {
+                return false;
+            }
+
+        }
 
         public static void BringWindowToFront(string processName) {
             IntPtr wdwIntPtr = Process.GetProcessesByName(processName).FirstOrDefault().MainWindowHandle;

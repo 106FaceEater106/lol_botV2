@@ -31,6 +31,8 @@ namespace LeagueBot.AI {
             if(state.gameOpen) {
                 state.inShop = isInShop();
             }
+
+            state.phase = clientLCU.GetGamePhase();
         }
 
         public override void Execute() {
@@ -44,8 +46,11 @@ namespace LeagueBot.AI {
 
                 updateState();
 
-
-                if (!state.gameOpen) {
+                if(state.phase == gameFlowPhase.WaitingForStats) {
+                    DBG.log("Game done but failed to close", MessageLevel.Warning);
+                    this.OnProcessClosed();
+                    return;
+                } else if (!state.gameOpen) {
                     DBG.log("Game done");
                     this.OnProcessClosed();
                     return;
@@ -81,7 +86,7 @@ namespace LeagueBot.AI {
         }
 
         public override void OnProcessClosed() {
-            bot.ApplyPattern(new EndGamePatternTFT(bot));
+            bot.nextPattern = new EndGamePatternTFT(bot);
             base.OnProcessClosed();
         }
     }

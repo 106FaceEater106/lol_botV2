@@ -17,6 +17,8 @@ namespace LeagueBot.LCU {
         ChampSelect,
         Matchmaking,
         ReadyCheck,
+        PreEndOfGame,
+        Reconnect,
         WaitingForStats,
     }
 }
