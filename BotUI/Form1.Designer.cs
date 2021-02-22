@@ -28,7 +28,6 @@ namespace BotUI {
             this.botVer = new System.Windows.Forms.Label();
             this.startButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
-            this.isRGM = new System.Windows.Forms.CheckBox();
             this.mode_lable = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -67,17 +66,6 @@ namespace BotUI {
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
-            // 
-            // isRGM
-            // 
-            this.isRGM.AutoSize = true;
-            this.isRGM.Location = new System.Drawing.Point(12, 95);
-            this.isRGM.Name = "isRGM";
-            this.isRGM.Size = new System.Drawing.Size(52, 19);
-            this.isRGM.TabIndex = 3;
-            this.isRGM.Text = "RGM";
-            this.isRGM.UseVisualStyleBackColor = true;
-            this.isRGM.CheckedChanged += new System.EventHandler(this.isRGM_CheckedChanged);
             // 
             // mode_lable
             // 
@@ -134,7 +122,6 @@ namespace BotUI {
             this.Controls.Add(this.button1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.mode_lable);
-            this.Controls.Add(this.isRGM);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.botVer);
@@ -154,7 +141,6 @@ namespace BotUI {
         private System.Windows.Forms.Label botVer;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button stopButton;
-        private System.Windows.Forms.CheckBox isRGM;
         private System.Windows.Forms.Label mode_lable;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;

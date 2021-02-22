@@ -20,11 +20,18 @@ namespace LeagueBot.Patterns.Actions {
             DateTime start = DateTime.Now;
 
             gameFlowPhase state;
+            bool tryedRestart = false;
 
             do {
                 state = clientLCU.GetGamePhase();
-                if (DateTime.Now.Subtract(start).TotalSeconds > loby_time_out) {
+                if(DateTime.Now.Subtract(start).TotalSeconds > loby_time_out && !tryedRestart) {
+                    clientLCU.StartSearch();
+                    tryedRestart = true;
+                    start = DateTime.Now;
+                    DBG.log("Tryeing to start que again",MessageLevel.Warning, "StartQueAction");
+                } else if (DateTime.Now.Subtract(start).TotalSeconds > loby_time_out) {
                     bot.Abort("Wait to long for loby to be ready", DEBUG.MessageLevel.Critical);
+                    return;
                 }
             } while (state != gameFlowPhase.Lobby && state != gameFlowPhase.InProgress);
             

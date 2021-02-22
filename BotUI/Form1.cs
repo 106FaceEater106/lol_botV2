@@ -117,20 +117,21 @@ namespace BotUI {
         }
 
         private void stopButton_Click(object sender, EventArgs e) {
-            bot.Abort();
-            if(botThread != null) {
+            bot.Abort("stop button used");
+            try {
                 botThread.Interrupt();
+            } catch {
+                DBG.log($"stoped w errors");
             }
-            botThread = null;
-        }
-
-        private void isRGM_CheckedChanged(object sender, EventArgs e) {
-            bot.isEvent = isRGM.Checked;
-            Debug.WriteLine($"event set to {bot.isEvent}");
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
             DBG.end();
+            try {
+                botThread.Interrupt();
+            } catch {
+                DBG.log($"stoped w errors");
+            }
         }
 
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
