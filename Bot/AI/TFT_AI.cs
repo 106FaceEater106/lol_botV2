@@ -77,6 +77,7 @@ namespace LeagueBot.AI {
 
                     for(int i = 0; i < 10; i++) {
                         LevelUp();
+                        Thread.Sleep(75);
                     }
 
                     dt = DateTime.Now;
