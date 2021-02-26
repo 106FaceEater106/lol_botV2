@@ -138,10 +138,5 @@ namespace BotUI {
             Form hb = new AboutBox1();
             hb.ShowDialog();
         }
-
-        private void button1_Click(object sender, EventArgs e) {
-            gameFlowPhase phase = clientLCU.GetGamePhase();
-            button1.Text = phase.ToString();
-        }
     }
 }
