@@ -131,7 +131,9 @@ namespace BotUI {
         private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
             DBG.end();
             try {
-                botThread.Interrupt();
+                if(botThread != null) {
+                    botThread.Interrupt();
+                }
             } catch {
                 DBG.log($"stoped w errors");
             }
