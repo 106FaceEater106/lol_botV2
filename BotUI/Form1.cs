@@ -26,6 +26,9 @@ namespace BotUI {
         private LeagueBot.Bot bot = new LeagueBot.Bot();
         private Thread botThread = null;
 
+        private bool boopAlerdDone = false;
+        private int maxBoops = 10;
+        private int usedBoops = 0;
 
         public Form1() {
             InitializeComponent();
@@ -137,6 +140,30 @@ namespace BotUI {
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
             Form hb = new AboutBox1();
             hb.ShowDialog();
+        }
+
+        private void boop_Click(object sender, EventArgs e) {
+            Console.Beep();
+            usedBoops++;
+            if(usedBoops >= maxBoops) {
+                boopButton.Enabled = false;
+                MessageBox.Show(
+                    null,
+                    "No more boops for you >:(",
+                    "Boop alert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            } else if(usedBoops >= maxBoops/4 && !boopAlerdDone) {
+                MessageBox.Show(
+                    null,
+                    $"You have used {usedBoops} of {maxBoops}\nYou can buy the boop dlc if you want unlimited boops",
+                    "Boop alert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                boopAlerdDone = true;
+            }
         }
     }
 }
