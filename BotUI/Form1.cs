@@ -52,11 +52,13 @@ namespace BotUI {
                 mode_lable.Visible = false;
                 toolStrip1.Enabled = false;
             #endif
-
+            
+            /*
             if(ConfigurationManager.AppSettings.Get("Read me") == "NOPE" && !DBG.isDBG) {
                 MessageBox.Show("Read README.MD", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
             }
+            */
 
             Task t = Task.Run(() => {
                 DBG.init();
