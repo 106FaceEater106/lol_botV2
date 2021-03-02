@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LeagueBot.LCU {
+namespace LCU {
     class EOGData {
         public string gameMode;
         public sBlock statsBlock;

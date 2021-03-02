@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LeagueBot.LCU;
+using LCU;
 using LeagueBot.DEBUG;
 
 namespace LeagueBot.Patterns.Actions {

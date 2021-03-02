@@ -5,12 +5,14 @@ using System.Drawing;
 using System.Threading;
 using System.Diagnostics;
 
-using LeagueBot.LCU;
+//using LeagueBot.LCU;
 using LeagueBot.AI;
-using LeagueBot.Event;
 using LeagueBot.DEBUG;
 using LeagueBot.Patterns;
 using LeagueBot.Constants;
+
+using LCU;
+using LCU.Event;
 
 using InputManager;
 
@@ -34,9 +36,9 @@ namespace LeagueBot {
         }
 
         public void init() {
-            isReady = clientLCU.init();
+            isReady = clientLCU.init(BotConf.FilePath);
             Thread.Sleep(500);
-            BotConst.accountId = clientLCU.getAccountId();
+            //BotConst.accountId = clientLCU.getAccountId();
             DBG.log($"Set account id to: {BotConst.accountId}");
         }
         public string getVersion() {

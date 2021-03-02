@@ -7,19 +7,17 @@ using System.Management;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Reflection;
 
 using Newtonsoft.Json;
 using Leaf.xNet;
 
-using Bot;
-using LeagueBot.Constants;
+using LCU.Event;
 
-using LeagueBot.Event;
-using LeagueBot.DEBUG;
-using System.Reflection;
-
-namespace LeagueBot.LCU {
+namespace LCU {
     public class clientLCU {
+
+        private static long accID;
 
         private static string auth;
 
@@ -40,8 +38,9 @@ namespace LeagueBot.LCU {
         #endregion
 
         #region SETUP
-        public static bool init() {
-            string path = Path.Combine(BotConf.FilePath, @"League of Legends\lockfile");
+        public static bool init(string lolPath) {
+            string path = Path.Combine(lolPath, @"League of Legends\lockfile");
+            
             using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
                 using (var streamReader = new StreamReader(fileStream, Encoding.Default)) {
                     string line;
@@ -56,13 +55,17 @@ namespace LeagueBot.LCU {
 
 
             if (Port == 0) {
-                DBG.log("Unable to initialize ClientLCU.cs (unable to read API port from process)", MessageLevel.Critical);
+                //DBG.log("Unable to initialize ClientLCU.cs (unable to read API port from process)", MessageLevel.Critical);
+                Console.WriteLine($"Critical : Unable to initialize ClientLCU.cs (unable to read API port from process)");
                 return false;
             }
             
             if(!IsApiReady()) {
-                DBG.log("Unable to initialize ClientLCU.cs (unable to get data from API)", MessageLevel.Critical);
+                //DBG.log("Unable to initialize ClientLCU.cs (unable to get data from API)", MessageLevel.Critical);
+                Console.WriteLine($"Critical : Unable to initialize ClientLCU.cs (unable to read API port from process)");
                 return false;
+            } else {
+                accID = getAccountId();
             }
             return true;
         }
@@ -120,7 +123,7 @@ namespace LeagueBot.LCU {
                 if (response == string.Empty) {
                     return true;
                 } else {
-                    DBG.log("Failt to start search", MessageLevel.Critical, "clientLCU");
+                    //DBG.log("Failt to start search", MessageLevel.Critical, "clientLCU");
                     return false;
                 }
             }
@@ -149,7 +152,7 @@ namespace LeagueBot.LCU {
                     int place = -99;
 
                     foreach(Player p in obj.statsBlock.players) {
-                        if(p.playerId == BotConst.accountId) {
+                        if(p.playerId == accID) {
                             place = p.ffaStanding;
                         }
                     }
@@ -170,9 +173,9 @@ namespace LeagueBot.LCU {
         public static HttpRequest CreateRequest() {
             HttpRequest request = new HttpRequest();
             request.IgnoreProtocolErrors = true;
-            request.ConnectTimeout = BotConst.HttpRequestTimeout;
-            request.ReadWriteTimeout = BotConst.HttpRequestTimeout;
-            request.CharacterSet = BotConst.HttpRequestEncoding;
+            request.ConnectTimeout = 10 * 1000;
+            request.ReadWriteTimeout = 10 * 1000;
+            request.CharacterSet = Encoding.UTF8;
             request.AddHeader("Authorization", "Basic " + auth);
             request.AcceptEncoding = "application/json";
             return request;

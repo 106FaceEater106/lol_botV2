@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using LeagueBot.LCU;
+using LCU;
 using LeagueBot.DEBUG;
 using LeagueBot.Windows;
 using LeagueBot.Patterns;

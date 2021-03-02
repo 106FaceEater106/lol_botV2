@@ -11,14 +11,9 @@ using System.Threading;
 using Newtonsoft.Json;
 using Leaf.xNet;
 
-using Bot;
-using LeagueBot.Constants;
-
-using LeagueBot.Event;
-using LeagueBot.DEBUG;
 using System.Reflection;
 
-namespace LeagueBot.LCU {
+namespace LCU {
     public static class gameLCU {
 
 

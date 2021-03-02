@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LeagueBot.Constants {
     public static class BotConst {
-
+        
+        [Obsolete]
         public const int HttpRequestTimeout = 10 * 1000;
+        [Obsolete]
         public static Encoding HttpRequestEncoding = Encoding.UTF8;
 
         public static string summonerName;

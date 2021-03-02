@@ -16,7 +16,6 @@ using System.Configuration;
 using Bot;
 using BotUI.API;
 using LeagueBot;
-using LeagueBot.LCU;
 using LeagueBot.DEBUG;
 using hotKey;
 

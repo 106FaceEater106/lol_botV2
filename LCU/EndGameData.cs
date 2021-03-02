@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LeagueBot.Event {
+namespace LCU.Event {
 
     public delegate void TftGameEndEventHandler(EndGameData data);
 

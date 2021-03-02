@@ -64,17 +64,12 @@
     <Compile Include="Bot.cs" />
     <Compile Include="conf.cs" />
     <Compile Include="Constants\BotConstant.cs" />
-    <Compile Include="LCU\clientLCU.cs" />
     <Compile Include="Constants\AvailableGameType.cs" />
     <Compile Include="Constants\ClickType.cs" />
     <Compile Include="Constants\ColorConstants.cs" />
     <Compile Include="Constants\FormConstants.cs" />
     <Compile Include="Constants\PixelsConstants.cs" />
     <Compile Include="DEBUG\DBG.cs" />
-    <Compile Include="EndGameData.cs" />
-    <Compile Include="LCU\Enums.cs" />
-    <Compile Include="LCU\gameLCU.cs" />
-    <Compile Include="LCU\LCUhelpers.cs" />
     <Compile Include="Patterns\Actions\AcceptQue.cs" />
     <Compile Include="Patterns\Actions\AcceptStuff.cs" />
     <Compile Include="Patterns\Actions\ClickAction.cs" />
@@ -107,6 +102,10 @@
     <ProjectReference Include="..\InputManager\InputManager.csproj">
       <Project>{f6b36eeb-c2ca-4f13-b2c1-3cd0294530f2}</Project>
       <Name>InputManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LCU\LCU.csproj">
+      <Project>{b7847f32-1d6a-436d-b85d-48b77aaa19bf}</Project>
+      <Name>LCU</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

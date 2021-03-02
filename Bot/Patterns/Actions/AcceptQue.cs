@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-using LeagueBot.LCU;
+using LCU;
 
 namespace LeagueBot.Patterns.Actions {
     class AcceptQue : PatternAction {

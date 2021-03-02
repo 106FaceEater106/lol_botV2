@@ -1,7 +1,6 @@
 ﻿using LeagueBot;
 using LeagueBot.Constants;
 using LeagueBot.DEBUG;
-using LeagueBot.Event;
 using LeagueBot.Patterns;
 using LeagueBot.Patterns.Actions;
 using LeagueBot.Windows;
@@ -12,7 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LeagueBot.LCU;
+using LCU;
+using LCU.Event;
 
 namespace LeagueBot.Patterns.Actions {
     public class GetPlacmentTFT : PatternAction {
