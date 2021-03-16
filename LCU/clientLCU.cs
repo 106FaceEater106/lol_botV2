@@ -12,12 +12,16 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Leaf.xNet;
 
-using LCU.Event;
+//using LCU.Event;
+using LCU.Helper;
+
 
 namespace LCU {
     public class clientLCU {
 
-        private static long accID;
+        private static string lolPath = string.Empty;
+
+        public static long accID;
 
         private static string auth;
 
@@ -34,13 +38,25 @@ namespace LCU {
         private static string getEndGameDataUrl => urlBase + "lol-end-of-game/v1/gameclient-eog-stats-block";
         private static string skitWaitForStatsUrl => urlBase + "lol-end-of-game/v1/state/dismiss-stats";
         private static string getSessionUrl => urlBase + "lol-login/v1/session";
+        private static string getChampSelectSessionUrl => urlBase + "lol-champ-select/v1/session";
+        private static string patchActionUrl => urlBase + "lol-champ-select/v1/session/actions/";
+        private static string getBannableChampsUrl => urlBase + "lol-champ-select/v1/bannable-champion-ids";
 
         #endregion
 
         #region SETUP
-        public static bool init(string lolPath) {
-            string path = Path.Combine(lolPath, @"League of Legends\lockfile");
-            
+
+        public static bool init(bool loadChamps = false) {
+            if(lolPath == string.Empty) {
+                throw new Exception("Cant init with no lol path set");
+            }
+
+            return init(lolPath);
+        }
+
+        public static bool init(string LOLPath) {
+            string path = Path.Combine(LOLPath, @"League of Legends\lockfile");
+            lolPath = path;
             using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
                 using (var streamReader = new StreamReader(fileStream, Encoding.Default)) {
                     string line;
@@ -89,6 +105,37 @@ namespace LCU {
         }
         #endregion
 
+        #region Champ select
+
+        
+
+    public static void patchAction(ActionPatch patch) {
+            string url = patchActionUrl + patch.id;
+            string body = JsonConvert.SerializeObject(patch);
+
+            using (HttpRequest req = CreateRequest()) {
+                req.Patch(url, body, "application/json");
+            }
+        
+        }
+        #endregion
+        /// <summary>
+        /// this use lol data dragon not client api
+        /// </summary>
+        /// <returns> string </returns>
+        public static string GetVersion() {
+            HttpRequest request = new HttpRequest();
+            HttpResponse res = request.Get(@"https://ddragon.leagueoflegends.com/api/versions.json");
+            
+            if(res.StatusCode != HttpStatusCode.OK) {
+                throw new Exception("Faild to load version list");
+            }
+
+            string[] verList = JsonConvert.DeserializeObject<string[]>(res.ToString());
+
+            return verList[0];
+        }
+
         #region GAME START
         public static bool CreateLobby(QueTypes queueId) {
             using (var request = CreateRequest()) {
@@ -102,11 +149,16 @@ namespace LCU {
             }
         }
 
+
         public static gameFlowPhase GetGamePhase() {
-            using (var request = CreateRequest()) {
-                var result = request.Get(GamePhaseUrl).ToString();
-                result = Regex.Match(result, "\"(.*)\"").Groups[1].Value;
-                return (gameFlowPhase)Enum.Parse(typeof(gameFlowPhase), result);
+            try {
+                using (var request = CreateRequest()) {
+                    var result = request.Get(GamePhaseUrl).ToString();
+                    result = Regex.Match(result, "\"(.*)\"").Groups[1].Value;
+                    return (gameFlowPhase)Enum.Parse(typeof(gameFlowPhase), result);
+                }
+            } catch (Exception err) {
+                return gameFlowPhase.NoClient;
             }
         }
 
@@ -140,6 +192,33 @@ namespace LCU {
                 }
                 return -99;
             }
+        }
+
+        public static int[] getBannableChamps() {
+            using(HttpRequest req = CreateRequest()) {
+                HttpResponse res = req.Get(getBannableChampsUrl);
+                string result = Regex.Match(res.ToString(), @"\[(.*)\]").Groups[1].Value;
+                return result.Split(',').Select(Int32.Parse).ToArray();
+            }
+        }
+
+        private static T getDeserializData<T>(string url) {
+            try {
+                using (HttpRequest req = CreateRequest()) {
+                    HttpResponse res = req.Get(getChampSelectSessionUrl);
+                    if (res.StatusCode == HttpStatusCode.OK) {
+                        return JsonConvert.DeserializeObject<T>(res.ToString());
+                    } else {
+                        return default(T);
+                    }
+                }
+            } catch(HttpException) {
+                return default(T);
+            }
+        }
+
+        public static Session getChampSelectSession() {
+            return getDeserializData<Session>(getChampSelectSessionUrl);
         }
 
         public static EndGameData getEndGameData() {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LCU.Event {
+namespace LCU.Helper {
 
     public delegate void TftGameEndEventHandler(EndGameData data);
 

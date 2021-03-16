@@ -40,7 +40,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,8 +51,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Champs\Champion.cs" />
+    <Compile Include="Champs\Champions.cs" />
+    <Compile Include="Champs\SelectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Champs\SelectForm.Designer.cs">
+      <DependentUpon>SelectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\Action.cs" />
+    <Compile Include="Champs\Helper\DDchamlist.cs" />
+    <Compile Include="Helper\ActionPatch.cs" />
+    <Compile Include="Helper\Player.cs" />
+    <Compile Include="Helper\Session.cs" />
     <Compile Include="clientLCU.cs" />
-    <Compile Include="EndGameData.cs" />
+    <Compile Include="Helper\EndGameData.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="gameLCU.cs" />
     <Compile Include="LCUhelpers.cs" />
@@ -58,6 +73,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Champs\SelectForm.resx">
+      <DependentUpon>SelectForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

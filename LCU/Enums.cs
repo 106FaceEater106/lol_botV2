@@ -12,13 +12,14 @@ namespace LCU {
     public enum gameFlowPhase {
         None,
         Lobby,
+        NoClient,
+        Reconnect,
         EndOfGame,
         InProgress,
+        ReadyCheck,
         ChampSelect,
         Matchmaking,
-        ReadyCheck,
         PreEndOfGame,
-        Reconnect,
         WaitingForStats,
     }
 }
