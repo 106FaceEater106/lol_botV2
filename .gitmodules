@@ -1,0 +1,3 @@
+[submodule "LCU"]
+	path = LCU
+	url = git@github.com:tobman4/LCU.git
