@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LCU;
-using LCU.Event;
+using LCU.Helper;
 
 namespace LeagueBot.Patterns.Actions {
     public class GetPlacmentTFT : PatternAction {

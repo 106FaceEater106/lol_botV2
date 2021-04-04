@@ -12,7 +12,7 @@ using LeagueBot.Patterns;
 using LeagueBot.Constants;
 
 using LCU;
-using LCU.Event;
+using LCU.Helper;
 
 using InputManager;
 
