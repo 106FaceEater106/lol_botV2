@@ -24,6 +24,7 @@ namespace BotUI {
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.botVer = new System.Windows.Forms.Label();
             this.startButton = new System.Windows.Forms.Button();
@@ -33,6 +34,7 @@ namespace BotUI {
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.boopButton = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,6 +116,11 @@ namespace BotUI {
             this.boopButton.UseVisualStyleBackColor = true;
             this.boopButton.Click += new System.EventHandler(this.boop_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -127,7 +134,7 @@ namespace BotUI {
             this.Controls.Add(this.botVer);
             this.Name = "Form1";
             this.Text = "a";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -146,6 +153,7 @@ namespace BotUI {
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.Button boopButton;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

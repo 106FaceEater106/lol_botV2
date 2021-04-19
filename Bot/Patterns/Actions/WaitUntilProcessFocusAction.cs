@@ -12,7 +12,7 @@ namespace LeagueBot.Patterns.Actions {
         }
 
         public override void Apply(Bot bot, Pattern pattern) {
-            while (!Interop.IsProcessFocused(ProcessName)) {
+            while (!Interop.IsProcessFocused(ProcessName) && !isStoped) {
                 Console.WriteLine("Wait focus from " + ProcessName + "...");
                 Thread.Sleep(2000);
                 try {

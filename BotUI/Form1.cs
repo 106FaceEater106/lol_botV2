@@ -23,7 +23,7 @@ namespace BotUI {
     public partial class Form1 : Form {
 
         private LeagueBot.Bot bot = new LeagueBot.Bot();
-        private Thread botThread = null;
+        //private Thread botThread = null;
 
         private bool boopAlerdDone = false;
         private int maxBoops = 10;
@@ -104,40 +104,15 @@ namespace BotUI {
         }
 
         private void startButton_Click(object sender, EventArgs e) {
-
-            if (botThread == null || !bot.working) {
-                botThread = new Thread(bot.ThreadProc);
-                botThread.Start();
-            } else {
-                DialogResult res = MessageBox.Show("Bot migth be runing. force new start?","LOL BOT",MessageBoxButtons.YesNo);
-                if(res == DialogResult.Yes) {
-                    bot.Abort();
-                    //botThread.Abort();
-                    botThread = null;
-                    botThread = new Thread(bot.ThreadProc);
-                    botThread.Start();
-                }
-            }
+            bot.Start();
         }
 
         private void stopButton_Click(object sender, EventArgs e) {
-            bot.Abort("stop button used");
-            try {
-                botThread.Interrupt();
-            } catch {
-                DBG.log($"stoped w errors");
-            }
+            //bot.Abort("stop button used");
+            bot.stop();
         }
-
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
-            DBG.end();
-            try {
-                if(botThread != null) {
-                    botThread.Interrupt();
-                }
-            } catch {
-                DBG.log($"stoped w errors");
-            }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
+            bot.stop();
         }
 
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
@@ -167,6 +142,11 @@ namespace BotUI {
                 );
                 boopAlerdDone = true;
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e) {
+            object actor = bot.currentAction;
+            mode_lable.Text = (actor == null) ? "None" : actor.GetType().ToString();
         }
     }
 }

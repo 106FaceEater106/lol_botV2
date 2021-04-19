@@ -22,7 +22,7 @@ namespace LeagueBot.Patterns.Actions {
                     loop = false;
                 }
 
-            } while (loop);
+            } while (loop && !isStoped);
 
         }
     }

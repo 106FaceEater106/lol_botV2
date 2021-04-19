@@ -17,12 +17,10 @@ namespace LeagueBot.Patterns {
 
         public virtual PatternAction[] Actions { get; set; }
         
-        //[Obsolete]
-        //protected Bot Bot { get; private set; }
         protected Bot bot { get; private set; }
 
         protected bool Disposed { get; private set; }
-
+        private bool isStoped = false;
 
         public Pattern(Bot bot) {
             this.bot = bot;
@@ -74,7 +72,7 @@ namespace LeagueBot.Patterns {
                 if(Disposed) {
                     DBG.log("Patter is disposed while runing", MessageLevel.Warning);
                     return;
-                } // TODO: add pause
+                }
 
                 if(!Interop.IsProcessOpen(ProcessName)) {
                     this.OnProcessClosed();
@@ -90,6 +88,7 @@ namespace LeagueBot.Patterns {
                         DBG.log("Faild to center window", MessageLevel.Warning);
                     }
                 }
+                bot.setCurrentAction(action,this);
                 action.Apply(bot, this);
                 actionIndex++;
             }

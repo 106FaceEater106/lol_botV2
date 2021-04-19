@@ -36,7 +36,7 @@ namespace LeagueBot.Patterns.Actions {
                 } else {
                     Thread.Sleep(500);
                 }
-            } while(state != gameFlowPhase.InProgress);
+            } while(state != gameFlowPhase.InProgress && !isStoped);
             
             DBG.log($"Was in que {(DateTime.Now.Subtract(start)).TotalSeconds}s");
         }

@@ -17,7 +17,7 @@ namespace LeagueBot.Patterns.Actions {
 
         public override void Apply(Bot bot, Pattern pattern) {
             int x = 0;
-            while (!Interop.IsProcessOpen(ProcessName)) {
+            while (!Interop.IsProcessOpen(ProcessName) && !isStoped) {
                 Console.WriteLine("Wait for " + ProcessName + "...");
                 Thread.Sleep(1000);
                 x++;

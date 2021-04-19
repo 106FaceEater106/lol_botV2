@@ -17,6 +17,7 @@ namespace LeagueBot.Patterns.Actions {
             get;
             set;
         }
+
         public ClickUntilColorAction(Color color, Point point, Point clickPoint, string description, double duration = 0) : base(description, duration) {
             ClickPoint = clickPoint;
             Point = point;
@@ -25,7 +26,7 @@ namespace LeagueBot.Patterns.Actions {
 
         public override void Apply(Bot bot, Pattern pattern) {
             bool valid = false;
-            while (!valid) {
+            while (!valid && !isStoped) {
                 pattern.CenterWindow();
                 var px = Interop.GetPixelColor(Point);
                 if (px.R == Color.R && px.G == Color.G && px.B == Color.B) {

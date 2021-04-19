@@ -15,6 +15,12 @@ namespace LeagueBot.Patterns.Actions {
 
         public bool needWindowHelp = true;
 
+        protected bool isStoped = false;
+
+        public virtual void stop() {
+            isStoped = true;
+        }
+
         public PatternAction(string description, double duration = 0) {
             Description = description;
             Duration = duration;
@@ -28,7 +34,7 @@ namespace LeagueBot.Patterns.Actions {
         }
 
         public virtual void Dispose() {
-            
+            stop();
         }
     }
 }

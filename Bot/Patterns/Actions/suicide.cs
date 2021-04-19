@@ -13,7 +13,7 @@ namespace Bot.Patterns.Actions {
         }
 
         public override void Apply(LeagueBot.Bot bot, Pattern pattern) {
-            bot.Abort("suicide actions",LeagueBot.DEBUG.MessageLevel.Critical);
+            bot.stop("suicide actions",LeagueBot.DEBUG.MessageLevel.Info);
             if(kill) {
                 Thread.CurrentThread.Abort();
             }

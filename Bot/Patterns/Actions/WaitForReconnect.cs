@@ -18,13 +18,13 @@ namespace LeagueBot.Patterns.Actions {
             do {
                 state = clientLCU.GetGamePhase();
                 if((DateTime.Now-start).TotalSeconds > 60*5) {
-                    bot.Abort("Wait to long for stats",MessageLevel.Critical);
+                    bot.stop("Wait to long for stats");
                     break;
                 } else if((DateTime.Now - start).TotalSeconds > 60) {
                     clientLCU.skipWaitForStats();
                 }
 
-            } while(state == gameFlowPhase.WaitingForStats);
+            } while(state == gameFlowPhase.WaitingForStats && !isStoped);
             DBG.log($"Waited {(DateTime.Now - start).TotalSeconds}s for stats", MessageLevel.Info);
         }
     }

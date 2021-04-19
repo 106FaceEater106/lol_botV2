@@ -5,6 +5,11 @@ namespace LeagueBot.Patterns.Actions {
         
         private baseAI AI;
 
+        public override void stop() {
+            base.stop();
+            AI.stop();
+        }
+
         public ExecuteAIAction(baseAI ai, string description) : base(description) {
             this.AI = ai;
         }

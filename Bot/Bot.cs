@@ -6,9 +6,11 @@ using System.Threading;
 using System.Diagnostics;
 
 //using LeagueBot.LCU;
+using LeagueBot;
 using LeagueBot.AI;
 using LeagueBot.DEBUG;
 using LeagueBot.Patterns;
+using LeagueBot.Patterns.Actions;
 using LeagueBot.Constants;
 
 using LCU;
@@ -21,7 +23,8 @@ namespace LeagueBot {
 
         public event EventHandler<EndGameData> GameEndEvent;
 
-        private Pattern Pattern;
+        private Pattern pattern;
+        //private Pattern currentPattern = null;
 
         public AvailableGameType GameType;
         public const Int32 buy_delay = 500;
@@ -30,6 +33,9 @@ namespace LeagueBot {
         public bool isReady = false;
         public bool isEvent = false;
         public Pattern nextPattern = null;
+        public Thread workThread = null;
+
+        public PatternAction currentAction { get; private set; } = null;
 
         public Bot() {
             GameEndEvent += DBG.on_game_end;
@@ -45,47 +51,86 @@ namespace LeagueBot {
             Version v = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
             return v.ToString();
         }
+        
+
 
         #region Controll
-        public void Start(AvailableGameType gameType = AvailableGameType.TFT) {
-            working = true;
-            switch(gameType) {
-                case AvailableGameType.TFT:
-                    ApplyPattern(new StartTFTPattern(this));
-                    break;
-                case AvailableGameType.TEST:
-                    ApplyPattern(new memTestPattern(this));
-                    break;
-                default:
-                    throw new NotImplementedException("NO default game mode set");
-                    //break;
+
+
+        public void Start() {
+            if(workThread != null) {
+                return; // hard stop cuz i am bad at code :)
+            }
+            workThread = new Thread(this._start);
+            workThread.Start();
+        }
+
+        public void stop(string msg = "", MessageLevel lvl=MessageLevel.Critical) {
+            currentAction?.stop();
+            workThread?.Abort();
+            workThread = null;
+            currentAction = null;
+        }
+
+        private void _start() { // TODO: Fix name
+            try {
+                AvailableGameType gameType = AvailableGameType.TFT;
+                working = true;
+                switch (gameType) {
+                    case AvailableGameType.TFT:
+                        ApplyPattern(new StartTFTPattern(this));
+                        break;
+                    case AvailableGameType.TEST:
+                        ApplyPattern(new memTestPattern(this));
+                        break;
+                    default:
+                        throw new NotImplementedException("NO default game mode set");
+                        //break;
+                }
+            } catch(ThreadAbortException) {
+            } catch(ThreadInterruptedException) {
+            } catch(Exception e) {
+                DBG.log($"Unknown error: {e}");
             }
         }
 
-        public void ThreadProc() {
-            this.Start();
-            return;
-        }
-
         public void ApplyPattern(Pattern p, int i = 0) {
-            Pattern = p;
+            pattern = p;
             do {
-                Pattern.ExecuteV2();
+                pattern.ExecuteV2();
                 //Pattern.Dispose();
-                Pattern = nextPattern;
+                pattern = nextPattern;
                 nextPattern = null;
-            } while(Pattern != null);
+            } while(pattern != null);
             DBG.log("All patterns done!");
         }
         
+        public void setCurrentAction(PatternAction action, Pattern sender) {
+            DBG.log($"set action to: {action.GetType()}");
+            if(sender != pattern) {
+                string zombie = sender.GetType().Name;
+                string live = pattern.GetType().Name;
+                DBG.log(
+                    $"ZOMBIE PATTER: {live} is active pattern but {zombie} is trying to change active action",
+                    MessageLevel.Critical
+                );
+                stop();
+            } else {
+                currentAction = action;
+            }
+        }
+
+        /*
+        [Obsolete("Move to Bot.stop")]
         public void Abort(String stop_reson = "unknown reson", MessageLevel lvl = MessageLevel.Info) {
-            if (Pattern != null) Pattern.Dispose();
+            if (pattern != null) pattern.Dispose();
             working = false;
             DBG.log("BOT STOPED: " + stop_reson, lvl ,"BOT");
             if(stop_reson == "unknown reson") {
                 DBG.log($"{Environment.StackTrace}");
             }
         }
+        */
         #endregion
 
         #region Mouse
