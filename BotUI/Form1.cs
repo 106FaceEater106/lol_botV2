@@ -50,7 +50,6 @@ namespace BotUI {
             #else
                 BotConf.FilePath = ConfigurationManager.AppSettings.Get("LOL_FILE_PATH");
                 mode_lable.Visible = false;
-                toolStrip1.Enabled = false;
             #endif
             
             /*
