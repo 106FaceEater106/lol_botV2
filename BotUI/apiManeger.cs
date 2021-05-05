@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 
 namespace BotUI.API {
+    [Obsolete]
     public static class apiManeger {
 
 

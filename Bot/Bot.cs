@@ -37,6 +37,8 @@ namespace LeagueBot {
 
         public PatternAction currentAction { get; private set; } = null;
 
+        public bool needRestart = false;
+
         public Bot() {
             GameEndEvent += DBG.on_game_end;
         }
@@ -62,17 +64,31 @@ namespace LeagueBot {
                 return; // hard stop cuz i am bad at code :)
             }
             workThread = new Thread(this._start);
+            workThread.Name = "workThread";
             workThread.Start();
         }
 
-        public void stop(string msg = "", MessageLevel lvl=MessageLevel.Critical) {
+        [Obsolete("no stop msg u stopid shit")]
+        public void stop(string mgs, MessageLevel lvl = MessageLevel.Info) {
+            DBG.log(mgs, lvl);
+            stop();
+        }
+
+        public void stop(bool killThread = true) {
             currentAction?.stop();
-            workThread?.Abort();
-            workThread = null;
+            pattern?.stop();
+            if(killThread) {
+                workThread?.Abort();
+                workThread = null;
+            }
             currentAction = null;
+            nextPattern = null;
         }
 
         private void _start() { // TODO: Fix name
+            
+            Start:
+            
             try {
                 AvailableGameType gameType = AvailableGameType.TFT;
                 working = true;
@@ -87,14 +103,23 @@ namespace LeagueBot {
                         throw new NotImplementedException("NO default game mode set");
                         //break;
                 }
-            } catch(ThreadAbortException) {
-            } catch(ThreadInterruptedException) {
+            } catch (ThreadAbortException) {
+            } catch (ThreadInterruptedException) {
             } catch(Exception e) {
                 DBG.log($"Unknown error: {e}");
+            }
+
+            DBG.log($"Done({needRestart})");
+
+            if(needRestart) {
+                goto Start;
             }
         }
 
         public void ApplyPattern(Pattern p, int i = 0) {
+
+            AcceptQue.maxFails = 2;// TODO: remove
+            
             pattern = p;
             do {
                 pattern.ExecuteV2();

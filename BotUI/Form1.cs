@@ -120,6 +120,10 @@ namespace BotUI {
         }
 
         private void boop_Click(object sender, EventArgs e) {
+
+            LCU.clientLCU.leavLoby();
+
+            return;
             Console.Beep();
             usedBoops++;
             if(usedBoops >= maxBoops) {

@@ -12,6 +12,8 @@ using LCU;
 namespace LeagueBot.Patterns.Actions {
     class AcceptQue : PatternAction {
 
+        public static int maxFails = 10;
+
         public AcceptQue() : base("Waiting for match") {
             needWindowHelp = false;
         }
@@ -20,6 +22,7 @@ namespace LeagueBot.Patterns.Actions {
 
             DateTime start = DateTime.Now;
             gameFlowPhase state;
+            int faileCount = 0;
 
             do {
                 state = clientLCU.GetGamePhase();
@@ -30,6 +33,15 @@ namespace LeagueBot.Patterns.Actions {
                     clientLCU.AcceptMatch();
                     Thread.Sleep(5000);
                 } else if(state == gameFlowPhase.Lobby) {
+
+                    if(faileCount >= maxFails) {
+                        clientLCU.leavLoby();
+                        bot.needRestart = true;
+                        bot.stop();
+                        return;
+                    }
+
+                    faileCount++;
                     DBG.log("Que faild to start, trying to restart que",MessageLevel.Warning);
                     clientLCU.StartSearch();
                     Thread.Sleep(2000);

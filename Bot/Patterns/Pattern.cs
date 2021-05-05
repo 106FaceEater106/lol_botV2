@@ -69,6 +69,10 @@ namespace LeagueBot.Patterns {
 
             while(actionIndex < Actions.Length) {
                 
+                if(isStoped) {
+                    return;
+                }
+
                 if(Disposed) {
                     DBG.log("Patter is disposed while runing", MessageLevel.Warning);
                     return;
@@ -92,6 +96,10 @@ namespace LeagueBot.Patterns {
                 action.Apply(bot, this);
                 actionIndex++;
             }
+        }
+
+        public void stop() {
+            isStoped = true;
         }
 
         public virtual void Dispose() {
