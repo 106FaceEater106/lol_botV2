@@ -74,7 +74,7 @@ namespace LeagueBot.Patterns {
                 }
 
                 if(Disposed) {
-                    DBG.log("Patter is disposed while runing", MessageLevel.Warning);
+                    DBGV2.log("Patter is disposed while runing", MessageLevel.Warning);
                     return;
                 }
 
@@ -83,13 +83,13 @@ namespace LeagueBot.Patterns {
                 }
                 
                 PatternAction action = Actions[actionIndex];
-                DBG.log("(" + this.GetType().Name + "): " + action.ToString());
+                DBGV2.log("(" + this.GetType().Name + "): " + action.ToString());
                 
                 if(action.needWindowHelp) {
                     try {
                         CenterWindow();
                     } catch {
-                        DBG.log("Faild to center window", MessageLevel.Warning);
+                        DBGV2.log("Faild to center window", MessageLevel.Warning);
                     }
                 }
                 bot.setCurrentAction(action,this);

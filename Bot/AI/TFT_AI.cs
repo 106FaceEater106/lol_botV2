@@ -36,7 +36,7 @@ namespace LeagueBot.AI {
         }
 
         public override void Execute() {
-            DBG.log("TFT AI START");
+            DBGV2.log("TFT AI START");
 
             DateTime dt = DateTime.Now;
             dt = dt.AddMinutes(-2);
@@ -47,11 +47,10 @@ namespace LeagueBot.AI {
                 updateState();
 
                 if(state.phase == gameFlowPhase.WaitingForStats) {
-                    DBG.log("Game done but failed to close", MessageLevel.Warning);
+                    DBGV2.log("Game done but failed to close", MessageLevel.Warning);
                     this.OnProcessClosed();
                     return;
                 } else if (!state.gameOpen) {
-                    DBG.log("Game done");
                     this.OnProcessClosed();
                     return;
                 } else if(!bot.working) {

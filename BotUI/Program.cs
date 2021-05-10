@@ -2,16 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using System.Configuration;
+
+using LeagueBot.DEBUG;
 
 namespace BotUI {
     static class Program {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main() {
+
+            DBGV2.init();
+
+            string dbg = ConfigurationManager.AppSettings.Get("Debug");
+
+            if(dbg.ToUpper() == "YES") {
+                DBGV2.getConsole();
+            } else if(dbg.ToUpper() != "NO") {
+                DBGV2.getConsole();
+                DBGV2.log("Debug need to be yes or no. stupid");
+            }
+
+            DBGV2.log("App start",MessageLevel.Info);
+
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

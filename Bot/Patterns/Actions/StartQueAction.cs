@@ -28,17 +28,17 @@ namespace LeagueBot.Patterns.Actions {
                     clientLCU.StartSearch();
                     tryedRestart = true;
                     start = DateTime.Now;
-                    DBG.log("Tryeing to start que again",MessageLevel.Warning, "StartQueAction");
+                    DBGV2.log("Tryeing to start que again",MessageLevel.Warning);
                 } else if (DateTime.Now.Subtract(start).TotalSeconds > loby_time_out) {
-                    bot.stop("Wait to long for loby to be ready");
+                    bot.stop();
                     return;
                 }
             } while (state != gameFlowPhase.Lobby && state != gameFlowPhase.InProgress && !isStoped);
             
             if(state == gameFlowPhase.InProgress) {
-                DBG.log("Already in game", MessageLevel.Warning);
+                DBGV2.log("Already in game", MessageLevel.Warning);
             } else if(!clientLCU.StartSearch()) {
-                bot.stop("Faild to search");
+                bot.stop();
             }
         }
     }

@@ -60,9 +60,7 @@ namespace BotUI {
             */
 
             Task t = Task.Run(() => {
-                DBG.init();
                 bot.init();
-                DBG.log("DBG INIT DONE");
                 startButton.Invoke(new Action(() => startButton.Enabled = true));
             });
             
@@ -114,17 +112,9 @@ namespace BotUI {
             bot.stop();
         }
 
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
-            Form hb = new AboutBox1();
-            hb.ShowDialog();
-        }
-
         private void boop_Click(object sender, EventArgs e) {
-
-            LCU.clientLCU.leavLoby();
-
-            return;
             Console.Beep();
+            DBGV2.log("boop",MessageLevel.Debug);
             usedBoops++;
             if(usedBoops >= maxBoops) {
                 boopButton.Enabled = false;

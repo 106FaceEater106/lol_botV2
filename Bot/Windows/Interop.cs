@@ -170,7 +170,6 @@ namespace LeagueBot.Windows {
             } else {
                 return false;
             }
-
         }
 
         public static void BringWindowToFront(string processName) {

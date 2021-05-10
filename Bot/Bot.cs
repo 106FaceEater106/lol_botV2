@@ -40,15 +40,17 @@ namespace LeagueBot {
         public bool needRestart = false;
 
         public Bot() {
-            GameEndEvent += DBG.on_game_end;
+            GameEndEvent += DBGV2.onGameEnd;
+
         }
 
         public void init() {
             isReady = clientLCU.init(BotConf.FilePath);
             Thread.Sleep(500);
             //BotConst.accountId = clientLCU.getAccountId();
-            DBG.log($"Set account id to: {BotConst.accountId}");
+            DBGV2.log($"Set account id to: {BotConst.accountId}");
         }
+
         public string getVersion() {
             Version v = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
             return v.ToString();
@@ -78,7 +80,7 @@ namespace LeagueBot {
             currentAction?.stop();
             pattern?.stop();
             if(killThread) {
-                workThread?.Abort();
+                workThread?.Interrupt();
                 workThread = null;
             }
             currentAction = null;
@@ -106,12 +108,13 @@ namespace LeagueBot {
             } catch (ThreadAbortException) {
             } catch (ThreadInterruptedException) {
             } catch(Exception e) {
-                DBG.log($"Unknown error: {e}");
+                DBGV2.log($"Unknown error: {e}", MessageLevel.Critical);
             }
 
-            DBG.log($"Done({needRestart})");
+            DBGV2.log($"Done({needRestart})");
 
             if(needRestart) {
+                needRestart = false;
                 goto Start;
             }
         }
@@ -127,15 +130,15 @@ namespace LeagueBot {
                 pattern = nextPattern;
                 nextPattern = null;
             } while(pattern != null);
-            DBG.log("All patterns done!");
+            DBGV2.log("All patterns done!");
         }
         
         public void setCurrentAction(PatternAction action, Pattern sender) {
-            DBG.log($"set action to: {action.GetType()}");
+            DBGV2.log($"set action to: {action.GetType()}");
             if(sender != pattern) {
                 string zombie = sender.GetType().Name;
                 string live = pattern.GetType().Name;
-                DBG.log(
+                DBGV2.log(
                     $"ZOMBIE PATTER: {live} is active pattern but {zombie} is trying to change active action",
                     MessageLevel.Critical
                 );

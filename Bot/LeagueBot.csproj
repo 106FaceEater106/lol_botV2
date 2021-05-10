@@ -56,8 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Actions\ActionSet.cs" />
-    <Compile Include="AI\Actions\baseAction.cs" />
     <Compile Include="AI\baseAI.cs" />
     <Compile Include="AI\State.cs" />
     <Compile Include="AI\TFT_AI.cs" />

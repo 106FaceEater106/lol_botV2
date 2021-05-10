@@ -18,7 +18,7 @@ namespace LeagueBot.Patterns.Actions {
             do {
                 state = clientLCU.GetGamePhase();
                 if((DateTime.Now-start).TotalSeconds > 60*5) {
-                    bot.stop("Wait to long for stats");
+                    bot.stop();
                     break;
                 } else if((DateTime.Now - start).TotalSeconds > 60) {
                     clientLCU.skipWaitForStats();

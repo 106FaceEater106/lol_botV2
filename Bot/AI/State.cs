@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using LCU;
 
 namespace LeagueBot.AI {
-    struct State {
-        public int hp;
+    public class State {
+        public int hp { get; set; }
         public int gameTime;
         public DateTime lastAction;
         public gameFlowPhase phase;

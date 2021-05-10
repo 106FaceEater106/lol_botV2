@@ -42,7 +42,7 @@ namespace LeagueBot.Patterns.Actions {
                     }
 
                     faileCount++;
-                    DBG.log("Que faild to start, trying to restart que",MessageLevel.Warning);
+                    DBGV2.log("Que faild to start, trying to restart que",MessageLevel.Warning);
                     clientLCU.StartSearch();
                     Thread.Sleep(2000);
                 } else {
@@ -50,7 +50,7 @@ namespace LeagueBot.Patterns.Actions {
                 }
             } while(state != gameFlowPhase.InProgress && !isStoped);
             
-            DBG.log($"Was in que {(DateTime.Now.Subtract(start)).TotalSeconds}s");
+            DBGV2.log($"Was in que {(DateTime.Now.Subtract(start)).TotalSeconds}s");
         }
 
         public override void Dispose() {
