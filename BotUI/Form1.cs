@@ -100,17 +100,9 @@ namespace BotUI {
             } while(retry);
         }
 
-        private void startButton_Click(object sender, EventArgs e) {
-            bot.Start();
-        }
-
-        private void stopButton_Click(object sender, EventArgs e) {
-            //bot.Abort("stop button used");
-            bot.stop();
-        }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
-            bot.stop();
-        }
+        private void startButton_Click(object sender, EventArgs e) => bot.Start();
+        private void stopButton_Click(object sender, EventArgs e) => bot.stop();
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) => bot.stop(); 
 
         private void boop_Click(object sender, EventArgs e) {
             Console.Beep();
@@ -139,7 +131,9 @@ namespace BotUI {
 
         private void timer1_Tick(object sender, EventArgs e) {
             object actor = bot.currentAction;
-            mode_lable.Text = (actor == null) ? "None" : actor.GetType().ToString();
+            Process proc = Process.GetCurrentProcess();
+            mode_lable.Text = $"Theads: {proc.Threads.Count}";
+
         }
     }
 }

@@ -27,11 +27,8 @@ namespace LeagueBot {
         //private Pattern currentPattern = null;
 
         public AvailableGameType GameType;
-        public const Int32 buy_delay = 500;
-        public String status; //TODO: REMOVE
         public bool working;
         public bool isReady = false;
-        public bool isEvent = false;
         public Pattern nextPattern = null;
         public Thread workThread = null;
 
@@ -55,9 +52,6 @@ namespace LeagueBot {
             Version v = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
             return v.ToString();
         }
-        
-
-
         #region Controll
 
 
