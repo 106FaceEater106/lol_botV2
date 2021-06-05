@@ -78,6 +78,7 @@
     <Compile Include="Patterns\Actions\LogAction.cs" />
     <Compile Include="Patterns\Actions\MakeLobyAction.cs" />
     <Compile Include="Patterns\Actions\PatternAction.cs" />
+    <Compile Include="Patterns\Actions\sleepAction.cs" />
     <Compile Include="Patterns\Actions\StartQueAction.cs" />
     <Compile Include="Patterns\Actions\suicide.cs" />
     <Compile Include="Patterns\Actions\WaitForReconnect.cs" />

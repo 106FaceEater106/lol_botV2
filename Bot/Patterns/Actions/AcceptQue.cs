@@ -24,6 +24,8 @@ namespace LeagueBot.Patterns.Actions {
             gameFlowPhase state;
             int faileCount = 0;
 
+            Thread.Sleep(2000);
+
             do {
                 state = clientLCU.GetGamePhase();
 
@@ -44,9 +46,11 @@ namespace LeagueBot.Patterns.Actions {
                     faileCount++;
                     DBGV2.log("Que faild to start, trying to restart que",MessageLevel.Warning);
                     clientLCU.StartSearch();
-                    Thread.Sleep(2000);
-                } else {
-                    Thread.Sleep(500);
+                    Thread.Sleep(5000);
+                } else if(state == gameFlowPhase.None) {
+                    DBGV2.log("not in loby restarting", MessageLevel.Warning);
+                    bot.reset();
+                    return;
                 }
             } while(state != gameFlowPhase.InProgress && !isStoped);
             

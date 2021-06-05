@@ -68,7 +68,6 @@ namespace LeagueBot.Patterns {
             int actionIndex = 0;
 
             while(actionIndex < Actions.Length) {
-                
                 if(isStoped) {
                     return;
                 }
@@ -95,6 +94,7 @@ namespace LeagueBot.Patterns {
                 bot.setCurrentAction(action,this);
                 action.Apply(bot, this);
                 actionIndex++;
+                Thread.Sleep(500);
             }
         }
 

@@ -14,15 +14,16 @@ using LeagueBot.Constants;
 namespace LeagueBot.AI {
     class TFT_AI : baseAI {
 
-        State state;
+        private State state = new State();
+        private int maxWait = 50; // sec
 
         public TFT_AI(Bot bot) : base(bot) {
-
         }
 
         private void updateState() {
             state.apiReady = gameLCU.IsApiReady();
-            state.gameOpen = Interop.IsProcessOpen(ps_name);
+            //state.gameOpen = Interop.IsProcessOpen(ps_name);
+            state.gameOpen = Interop.ProcessHasWindow(ps_name);
 
             if(state.apiReady) {
                 state.isDead = gameLCU.IsPlayerDead();
@@ -30,6 +31,7 @@ namespace LeagueBot.AI {
 
             if(state.gameOpen) {
                 state.inShop = isInShop();
+                state.lastSeenGame = DateTime.Now;
             }
 
             state.phase = clientLCU.GetGamePhase();
@@ -42,22 +44,32 @@ namespace LeagueBot.AI {
             dt = dt.AddMinutes(-2);
             updateState();
 
-            while (state.gameOpen) {
+            do {
 
                 updateState();
 
-                if(state.phase == gameFlowPhase.WaitingForStats) {
+                bool old = Interop.IsProcessOpen(ps_name);
+                bool n = Interop.ProcessHasWindow(ps_name);
+
+                if ((DateTime.Now - state.lastSeenGame).TotalSeconds >= maxWait) {
+                    DBGV2.log($"Wait for to long for game {(DateTime.Now - state.lastSeenGame).TotalSeconds}s", MessageLevel.Critical);
+                    bot.reset();
+                    return;
+                } else if(state.phase != gameFlowPhase.InProgress) {
+                    this.OnProcessClosed();
+                    return;
+                } else if (state.phase == gameFlowPhase.WaitingForStats) {
                     DBGV2.log("Game done but failed to close", MessageLevel.Warning);
                     this.OnProcessClosed();
                     return;
                 } else if (!state.gameOpen) {
                     this.OnProcessClosed();
                     return;
-                } else if(!bot.working) {
+                } else if (!bot.working) {
                     return;
                 }
 
-                if(state.isDead) {
+                if (state.isDead) {
                     exitGame();
                 }
 
@@ -74,15 +86,15 @@ namespace LeagueBot.AI {
                     buyUnit(4);
                     Thread.Sleep(75);
 
-                    for(int i = 0; i < 10; i++) {
+                    for (int i = 0; i < 10; i++) {
                         LevelUp();
                         Thread.Sleep(75);
                     }
 
                     dt = DateTime.Now;
-                } 
+                }
                 Thread.Sleep(4000);
-            }
+            } while (state.gameOpen);
         }
 
         public override void OnProcessClosed() {

@@ -11,17 +11,13 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 
 namespace inputManagerV2 {
-    public class kb {
+    public class Keyboard {
 
         [DllImport("User32.dll")]
         static extern int SetForegroundWindow(IntPtr point);
 
-        public static void Send(string key) {
-            //Process p = Process.GetProcessesByName("League of Legends").FirstOrDefault();
-            //IntPtr h = p.MainWindowHandle;
-            //SetForegroundWindow(h);
-
-
+        public static void Send(Keys key) {
+            SendKeys.Send(key.ToString());
         }
 
     }

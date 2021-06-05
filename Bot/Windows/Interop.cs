@@ -158,7 +158,11 @@ namespace LeagueBot.Windows {
 
         [Obsolete]
         public static bool IsProcessOpen(string name) {
-            return Process.GetProcessesByName(name).Length > 0;
+            try {
+                return Process.GetProcessesByName(name).Length > 0;
+            } catch {
+                return false;
+            }
         }
 
 

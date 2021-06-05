@@ -17,5 +17,6 @@ namespace LeagueBot.AI {
         public bool inShop;
         public bool apiReady;
         public bool gameOpen;
+        public DateTime lastSeenGame = DateTime.Now;
     }
 }
