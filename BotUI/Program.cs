@@ -17,12 +17,18 @@ namespace BotUI {
 
             string dbg = ConfigurationManager.AppSettings.Get("Debug");
 
-            if(dbg.ToUpper() == "YES") {
+            if (dbg.ToUpper() == "YES") {
                 DBGV2.getConsole();
-            } else if(dbg.ToUpper() != "NO") {
+            } else if (dbg.ToUpper() == "GAY") {
+                DBGV2.isPride = true;
+                DBGV2.getConsole();
+            } else if (dbg.ToUpper() != "NO") {
                 DBGV2.getConsole();
                 DBGV2.log("Debug need to be yes or no. stupid");
             }
+
+            DBGV2.isPride = true;
+            DBGV2.getConsole();
 
             DBGV2.log("App start",MessageLevel.Info);
 

@@ -44,7 +44,7 @@ namespace LeagueBot {
         public void init() {
             isReady = clientLCU.init(BotConf.FilePath);
             Thread.Sleep(500);
-            //BotConst.accountId = clientLCU.getAccountId();
+            BotConst.accountId = clientLCU.getAccountId();
             DBGV2.log($"Set account id to: {BotConst.accountId}");
         }
 
@@ -111,16 +111,19 @@ namespace LeagueBot {
                 needRestart = false;
                 goto Start;
             }
+            working = false;
+        }
+
+        public void reset() {
+            nextPattern = new StartTFTPattern(this);
+            stop(false);
+
         }
 
         public void ApplyPattern(Pattern p, int i = 0) {
-
-            AcceptQue.maxFails = 2;// TODO: remove
-            
             pattern = p;
             do {
                 pattern.ExecuteV2();
-                //Pattern.Dispose();
                 pattern = nextPattern;
                 nextPattern = null;
             } while(pattern != null);
