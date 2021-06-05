@@ -48,9 +48,6 @@ namespace LeagueBot.AI {
 
                 updateState();
 
-                bool old = Interop.IsProcessOpen(ps_name);
-                bool n = Interop.ProcessHasWindow(ps_name);
-
                 if ((DateTime.Now - state.lastSeenGame).TotalSeconds >= maxWait) {
                     DBGV2.log($"Wait for to long for game {(DateTime.Now - state.lastSeenGame).TotalSeconds}s", MessageLevel.Critical);
                     bot.reset();
