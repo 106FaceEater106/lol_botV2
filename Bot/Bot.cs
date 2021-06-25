@@ -29,10 +29,12 @@ namespace LeagueBot {
         public AvailableGameType GameType;
         public bool working;
         public bool isReady = false;
-        public Pattern nextPattern = null;
-        public Thread workThread = null;
+        public bool stopAsap = false;
 
+        public Pattern nextPattern = null;
+        public Thread workThread { get; private set; } = null;
         public PatternAction currentAction { get; private set; } = null;
+        public baseAI ai = null;
 
         public bool needRestart = false;
 
@@ -54,6 +56,12 @@ namespace LeagueBot {
         }
         #region Controll
 
+        public void FFandSTOP() {
+            stopAsap = true;
+            if (ai != null) {
+                ai.endGameASAP = true;
+            }
+        }
 
         public void Start() {
             if(workThread != null) {
@@ -126,6 +134,12 @@ namespace LeagueBot {
                 pattern.ExecuteV2();
                 pattern = nextPattern;
                 nextPattern = null;
+
+                if(stopAsap) {
+                    stopAsap = false;
+                    return;
+                }
+
             } while(pattern != null);
             DBGV2.log("All patterns done!");
         }

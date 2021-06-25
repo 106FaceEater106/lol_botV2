@@ -15,7 +15,9 @@ namespace LeagueBot.Patterns.Actions {
         }
 
         public override void Apply(Bot bot, Pattern pattern) {
+            bot.ai = AI;
             AI.Execute();
+            bot.ai = null;
         }
 
         public override void Dispose() {

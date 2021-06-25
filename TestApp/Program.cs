@@ -1,17 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Windows;
 
-using inputManagerV2;
+using System.Text.Json;
 
-namespace TestApp {
+using LeagueBotV3;
+using LeagueBotV3.AI;
+using LeagueBotV3.Pattern;
+using LeagueBotV3.Pattern.Action;
+
+using LCU;
+using LCU.Helper;
+
+
+namespace testApp {
     class Program {
         static void Main(string[] args) {
-            Thread.Sleep(3000);
-            kb.Send("");
+            
+            DBG.init();
+
+            #if DEBUG
+            DBG.getConsole();
+            #endif
+
+            Global.loadConfig();
+            clientLCU.init(@"G:\lel");
+            Bot b = new();
+            b.addCliCommands();
+
+            cliManager.start();
         }
     }
 }

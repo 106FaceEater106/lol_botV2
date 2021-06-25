@@ -9,6 +9,7 @@ using InputManager;
 
 using LeagueBot.Constants;
 using LeagueBot.Windows;
+using LeagueBot.DEBUG;
 
 namespace LeagueBot.AI {
     public abstract class baseAI : IDisposable {
@@ -17,6 +18,7 @@ namespace LeagueBot.AI {
         protected bool isStoped = false;
         protected Bot bot;
 
+        public bool endGameASAP = false;
 
         public baseAI(Bot bot) {
             this.bot = bot;
@@ -63,6 +65,19 @@ namespace LeagueBot.AI {
 
         public void LevelUp() {
             Keyboard.KeyPress(System.Windows.Forms.Keys.F,50);
+        }
+
+        public void FF() {
+            DBGV2.log("trying to ff");
+            Keyboard.KeyPress(System.Windows.Forms.Keys.Enter,100);
+            Thread.Sleep(75);
+            Keyboard.KeyPress(System.Windows.Forms.Keys.OemBackslash,100);
+            Thread.Sleep(75);
+            Keyboard.KeyPress(System.Windows.Forms.Keys.F,100);
+            Thread.Sleep(75);
+            Keyboard.KeyPress(System.Windows.Forms.Keys.F, 100);
+            Thread.Sleep(75);
+            Keyboard.KeyPress(System.Windows.Forms.Keys.Enter,100);
         }
 
         public virtual void OnProcessClosed() {

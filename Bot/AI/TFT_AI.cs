@@ -12,7 +12,7 @@ using LeagueBot.Patterns;
 using LeagueBot.Constants;
 
 namespace LeagueBot.AI {
-    class TFT_AI : baseAI {
+    public class TFT_AI : baseAI {
 
         private State state = new State();
         private int maxWait = 50; // sec
@@ -35,17 +35,20 @@ namespace LeagueBot.AI {
             }
 
             state.phase = clientLCU.GetGamePhase();
+
+            state.gameTime = (int)(DateTime.Now - state.gameStart).TotalSeconds;
         }
 
         public override void Execute() {
             DBGV2.log("TFT AI START");
+
+            state.gameStart = DateTime.Now;
 
             DateTime dt = DateTime.Now;
             dt = dt.AddMinutes(-2);
             updateState();
 
             do {
-
                 updateState();
 
                 if ((DateTime.Now - state.lastSeenGame).TotalSeconds >= maxWait) {
@@ -68,7 +71,10 @@ namespace LeagueBot.AI {
 
                 if (state.isDead) {
                     exitGame();
+                } else if(endGameASAP && state.gameTime > 600) {
+                    FF();
                 }
+
 
 
                 if (DateTime.Now.Subtract(dt).TotalSeconds > 120 && state.inShop) {

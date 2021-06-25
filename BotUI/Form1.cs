@@ -19,6 +19,7 @@ using LeagueBot;
 using LeagueBot.DEBUG;
 using hotKey;
 
+
 namespace BotUI {
     public partial class Form1 : Form {
 
@@ -28,6 +29,8 @@ namespace BotUI {
         private bool boopAlerdDone = false;
         private int maxBoops = 10;
         private int usedBoops = 0;
+
+        private Thread b52Thread;
 
         public Form1() {
             InitializeComponent();
@@ -63,8 +66,6 @@ namespace BotUI {
                 bot.init();
                 startButton.Invoke(new Action(() => startButton.Enabled = true));
             });
-            
-
         }
 
         public static byte[] GetHash(string inputString) {
@@ -101,8 +102,26 @@ namespace BotUI {
         }
 
         private void startButton_Click(object sender, EventArgs e) => bot.Start();
-        private void stopButton_Click(object sender, EventArgs e) => bot.stop();
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e) => bot.stop(); 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) => bot.stop();
+        private void stopButton_Click(object sender, EventArgs e) {
+            if(bot.ai != null || true) {
+                DialogResult res = MessageBox.Show(
+                    "in game ai is runing do you want to ff asap and then stop?\nif no all actions wil stop now",
+                    "stop stop",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if(res == DialogResult.Yes) {
+                    bot.FFandSTOP();
+                } else {
+                    bot.stop();
+                }
+            } else {
+                bot.stop();
+            }
+            
+        }
 
         private void boop_Click(object sender, EventArgs e) {
             Console.Beep();
