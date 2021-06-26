@@ -18,6 +18,7 @@ namespace testApp {
         static void Main(string[] args) {
             
             DBG.init();
+            DBG.writeToConsole = false;
 
             #if DEBUG
             DBG.getConsole();

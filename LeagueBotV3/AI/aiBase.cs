@@ -22,10 +22,11 @@ namespace LeagueBotV3.AI {
         public AllGameData gameData;
         public DateTime aiStart;
         public aiState state = aiState.Loading;
-
+        public Bot bot;
 
         private int failCount = 0;
         private int maxFailes = 10;
+
 
         private double secSinceStart { 
             get {
@@ -48,6 +49,9 @@ namespace LeagueBotV3.AI {
         protected bool tic() {
             bool hasWin = Windows.hasWindow(Global.GameProc);
             // wait 30 sec for game window
+            if (!bot.isRuning) {
+                return false;
+            }
             if(!hasWin && secSinceStart > 30) {
                 return false;
             } else if(!hasWin) {

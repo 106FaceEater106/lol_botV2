@@ -11,6 +11,7 @@ namespace LeagueBotV3 {
      * 1 - print help
      */
     public delegate int commandCB(string[] arg);
+    public delegate void VoidCommandCB();
 
     struct command {
         public string name { get; init; }
@@ -63,6 +64,21 @@ namespace LeagueBotV3 {
 
         }
 
+        //good hax :)
+        public static void addCommand(string command, VoidCommandCB cb, string helpTxt = "No help text :(") {
+            commandCB stepCb = (string[] args) => {
+                cb();
+                return 0;
+            };
+            addCommand(command, stepCb, helpTxt);
+        }
+        public static void addCommand<T>(string command, Func<T> cb, string helpTxt = "No help text :(") {
+            commandCB stepCb = (string[] args) => {
+                cb();
+                return 0;
+            };
+            addCommand(command, stepCb, helpTxt);
+        }
         public static void addCommand(string command, commandCB cb, string helpTxt = "No help text :(") {
 
             if (command.Contains(" ")) {
@@ -134,7 +150,9 @@ namespace LeagueBotV3 {
 
         public static int exit(string[] args) {
             runing = false;
-            exitCb(args);
+            if(exitCb != null) {
+                return exitCb(args);
+            }
             return 0;
         }
     }

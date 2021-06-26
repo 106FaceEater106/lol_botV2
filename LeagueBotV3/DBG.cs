@@ -25,12 +25,12 @@ namespace LeagueBotV3 {
         private static string logPath = "./";
         private static string logName = "log.log";
 
-
         public static string logFile => Path.Join(logPath,logName);
         public static Dictionary<string, bool> dbgValues = new Dictionary<string, bool>();
 
         public static string dateStr => $"({DateTime.Now})";
 
+        public static bool writeToConsole = true;
         public static bool rainbow = false;
         public static ConsoleColor[] colors = new ConsoleColor[] {
             ConsoleColor.Red,
@@ -78,7 +78,9 @@ namespace LeagueBotV3 {
             }
 
             fileWriter.WriteLine(msg);
-            consoleWriter?.WriteLine(msg);
+            if(writeToConsole) {
+                consoleWriter?.WriteLine(msg);
+            }
         }
 
 

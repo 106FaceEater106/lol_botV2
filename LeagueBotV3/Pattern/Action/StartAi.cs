@@ -18,6 +18,7 @@ namespace LeagueBotV3.Pattern.Action {
 
         protected override ActionResult _run(Bot bot) {
             try {
+                ai.bot = bot;
                 bot.runAi(ai);
             } catch {
                 throw new NotImplementedException();
