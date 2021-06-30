@@ -9,16 +9,15 @@ using LeagueBotV3.AI;
 using LeagueBotV3.Pattern.Action;
 
 namespace LeagueBotV3.Pattern {
-    class StartGame : PatternBase {
-        public StartGame() {
-            patternType = Patterns.startGame;
+    class FullGame : PatternBase {
+        public FullGame() {
+            patternType = Patterns.FullGame;
             actions = new ActionBase[] {
                 new MakeLobby { que = LCU.QueTypes.NormalTFT },
                 new AcceptMatch(),
                 new WaitForGame(),
                 new StartAi { ai = new FullGameAi() },
                 new processPostGame()
-
             };
         }
 

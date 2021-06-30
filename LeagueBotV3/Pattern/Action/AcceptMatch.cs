@@ -22,6 +22,7 @@ namespace LeagueBotV3.Pattern.Action {
                 if(phase == gameFlowPhase.ReadyCheck) {
                     clientLCU.AcceptMatch();
                 } else if(phase == gameFlowPhase.Lobby) {
+                    Thread.Sleep(1500);
                     clientLCU.StartSearch();
                 } else if(phase == gameFlowPhase.InProgress) {
                     return ActionResult.Ok;

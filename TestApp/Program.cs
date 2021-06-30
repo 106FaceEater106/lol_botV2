@@ -16,20 +16,13 @@ using LCU.Helper;
 namespace testApp {
     class Program {
         static void Main(string[] args) {
-            
-            DBG.init();
-            DBG.writeToConsole = false;
+            while(true) {
+                LeagueBotV3.Windows.MoveMouse(100,100);
+                Thread.Sleep(10000);
+                LeagueBotV3.Windows.MoveMouse(1000, 1000);
+                Thread.Sleep(10000);
 
-            #if DEBUG
-            DBG.getConsole();
-            #endif
-
-            Global.loadConfig();
-            clientLCU.init(@"G:\lel");
-            Bot b = new();
-            b.addCliCommands();
-
-            cliManager.start();
+            }
         }
     }
 }

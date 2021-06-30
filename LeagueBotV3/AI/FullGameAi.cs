@@ -4,26 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Threading;
+
+using LCU.Helper;
+
 namespace LeagueBotV3.AI {
     public class FullGameAi : baseAi {
-        public override void execute(Bot bot) {
-            base.start();
-
-            bool ticRes;
-            do {
-                ticRes = base.tic();
-                if(!ticRes) {
-                    base.onClose();
-                    return;
-                }
-
-
-                if(state == aiState.InGame) {
-                    DBG.log(gameData.activePlayer.ToString());
-                }
-
-            } while(ticRes);
-
+    
+        public FullGameAi() {
+            tickEvent += tic;
         }
+
+        private void tic(object sender, AllGameData gameData) {
+
+            if(gameData == null) {
+                return;
+            }
+
+            if(gameData.activePlayer.championStats.currentHealth <= 0) {
+                Windows.bringWindowToFront(Global.GameProc);
+                Point p = Windows.lolToScreenSpace(Global.GameProc,Global.ExitButton);
+                Windows.MoveMouse(p,true);
+                res = stoppReson.Dead;
+                Thread.Sleep(1000);
+            }
+        }
+    
     }
 }

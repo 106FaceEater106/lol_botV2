@@ -17,60 +17,95 @@ namespace LeagueBotV3.AI {
 
     }
 
+    public enum stoppReson {
+        Dead,
+        FF,
+        BotStopp,
+        Safety,
+
+        Unknown
+    }
+
     public abstract class baseAi {
 
-        public AllGameData gameData;
-        public DateTime aiStart;
+        protected event EventHandler<AllGameData> tickEvent;
+        protected double deltaTime { get { return DateTime.Now.Subtract(lastTick).TotalMilliseconds; } }
+        protected DateTime lastTick = DateTime.Now;
+        protected DateTime aiStart;
+
         public aiState state = aiState.Loading;
         public Bot bot;
-
         private int failCount = 0;
         private int maxFailes = 10;
+        public stoppReson res { get; protected set; } = stoppReson.Unknown;
 
-
-        private double secSinceStart { 
+        private double secSinceStart {
             get {
                 return DateTime.Now.Subtract(aiStart).TotalSeconds;
             }
         }
 
-        abstract public void execute(Bot bot);
+        protected void ff() {
+            throw new NotImplementedException();
+        }
 
-        protected virtual void start() {
+        public void execute(Bot bot) {
             aiStart = DateTime.Now;
-            DBG.log("AI START");
+            while(tic());
+            DBG.logIfDbg($"AI done: {res}({secSinceStart}s)");
         }
 
-        protected virtual void onClose() {
-            DBG.log("AI DONE");
+        protected bool isInShop() {
+            Windows.bringWindowToFront(Global.GameProc);
+            return true;
         }
 
-        //return false if the ai need to stop
-        protected bool tic() {
+        private bool tic() {
+            AllGameData gameData = null;
             bool hasWin = Windows.hasWindow(Global.GameProc);
             // wait 30 sec for game window
             if (!bot.isRuning) {
+                res = stoppReson.BotStopp;
                 return false;
             }
-            if(!hasWin && secSinceStart > 30) {
+            if (!hasWin && secSinceStart > 30) {
+                res = stoppReson.Safety;
                 return false;
-            } else if(!hasWin) {
-                return true; 
+            } else if (!hasWin) {
+                return true;
             }
 
             try {
                 gameData = gameLCU.GetAllGameData();
-                if(gameData?.gameData.gameTime > 10 && state == aiState.Loading) {
+                if (gameData?.gameData.gameTime > 10 && state == aiState.Loading) {
                     DBG.log("Loading done!");
                     state = aiState.InGame;
                 }
             } catch {
-                if(secSinceStart > 500) {
+                if (secSinceStart > 500) {
                     failCount++;
                 }
             }
 
-            return failCount < maxFailes;
+            if(deltaTime > 2000) {
+                DBG.log($"Tic is slow({deltaTime}ms)",MessageLevel.Warning);
+            }
+
+            if(failCount < maxFailes) {
+                tickEvent?.Invoke(this, gameData);
+                lastTick = DateTime.Now;
+                return true;
+            } else {
+                res = stoppReson.Safety;
+                return false;
+            }
+        }
+
+        public virtual bool _testCommand(string[] args) {
+            if(args[0] == "E") {
+                Windows.MoveMouse(Global.ExitButton,true);
+            }
+            return true;
         }
     }
 }

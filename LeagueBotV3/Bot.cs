@@ -13,6 +13,7 @@ namespace LeagueBotV3 {
         private LinkedList<ActionBase> actionQue = new();
         private Patterns lastPattern;
         private Thread actionThread;
+        private baseAi currentAI;
 
         public bool isRuning { get; private set; } = false;
 
@@ -32,7 +33,14 @@ namespace LeagueBotV3 {
 
 
         public void runAi(baseAi ai) {
-            ai.execute(this);
+            currentAI = ai;
+            try {
+                ai.execute(this);
+                DBG.log($"AI done: {ai.res}",MessageLevel.Info);
+            } catch(Exception err) {
+                DBG.log($"{err.GetType()} in {ai.GetType()}", MessageLevel.Critical);
+            }
+            currentAI = null;
         }
 
         public Thread threadStart() {
@@ -56,7 +64,7 @@ namespace LeagueBotV3 {
 
             if(actionQue.Count == 0) {
                 DBG.log("Start with no patter. using full game",MessageLevel.Warning);
-                queueActions(PatternFactory.get(Patterns.startGame));
+                queueActions(PatternFactory.get(Patterns.FullGame));
             }
 
             isRuning = true;
@@ -112,6 +120,32 @@ namespace LeagueBotV3 {
             cliManager.addCommand("stopBot",stop,"stop bot asap");
             cliManager.addCommand("lcu-state", LCUstatus,"Get status of the lol client/game api");
             cliManager.addCommand("liveLog", liveLog, "turn live log on or off");
+            cliManager.addCommand("initLCU", reInitLCU, "try to init lcu. use initLCU {League of Legends folder placement}");
+
+            cliManager.addCommand("_test",sendToAi);
+            cliManager.addCommand("_startAI", testAI);
+        }
+
+        public int testAI() {
+#if RELEASE
+            return 1;
+#endif
+            isRuning = true;
+
+            baseAi a = new FullGameAi();
+            a.bot = this;
+            ThreadPool.QueueUserWorkItem((object x) => { runAi(a); });
+            
+
+            isRuning = false;
+            return 0;
+        }
+
+        public int sendToAi(string[] args) {
+            if (args.Length > 0 && currentAI != null) {
+                currentAI._testCommand(args);
+            }
+            return 0;
         }
 
         public void liveLog() {
@@ -122,6 +156,13 @@ namespace LeagueBotV3 {
         public int cliStart(string[] args) {
             threadStart();
             return 0;
+        }
+
+        public int reInitLCU(string[] args) {
+            if (args.Length == 0) return 1;
+            LCU.clientLCU.init(args[0]);
+            Thread.Sleep(1000);
+            return LCU.clientLCU.IsApiReady() ? 0 : 1;
         }
 
         public int LCUstatus(string[] args) {

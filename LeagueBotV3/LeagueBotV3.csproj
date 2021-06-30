@@ -1,8 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <OutputType>Exe</OutputType>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="InputSimulator" Version="1.0.4" />
-    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0-preview.1.21102.12" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0-preview.5.21301.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +35,6 @@
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Windows.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="botConf.conf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

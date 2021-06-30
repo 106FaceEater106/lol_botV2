@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace LeagueBotV3.Pattern {
 
     public enum Patterns {
-        startGame
+        FullGame
     }
 
     public static class PatternFactory {
         public static PatternBase get(Patterns p) {
             switch(p) {
-                case Patterns.startGame:
-                    return new StartGame();
+                case Patterns.FullGame:
+                    return new FullGame();
 
                 default:
                     throw new NotImplementedException();

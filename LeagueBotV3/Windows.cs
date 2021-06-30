@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Windows;
 
 using WindowsInput;
 using WindowsInput.Native;
+using System.Windows.Forms;
 
 namespace LeagueBotV3 {
 
@@ -22,6 +25,11 @@ namespace LeagueBotV3 {
 
         //https://github.com/michaelnoonan/inputsimulator
         private static InputSimulator simulator = new();
+
+        private const int SWP_NOSIZE = 0x0001;
+        private const int SWP_NOZORDER = 0x0004;
+        private const int SWP_SHOWWINDOW = 0x0040;
+        private const int SWP_NOMOVE = 0x0200;
 
         #region Windows
         public static bool hasWindow(string proc) {
@@ -55,6 +63,19 @@ namespace LeagueBotV3 {
             bringWindowToFront(processes[0].MainWindowHandle);
         }
 
+        public static Point lolToScreenSpace(string name, Point lolPoint) {
+            Process process = Process.GetProcessesByName(name).FirstOrDefault();
+
+            if (process == null || process?.MainWindowHandle == IntPtr.Zero) return null;
+
+            IntPtr handle = process.MainWindowHandle;
+
+            Rect rct = new();
+            GetWindowRect(handle, ref rct);
+
+            return new Point { X = rct.Left + lolPoint.X, Y = rct.Top + lolPoint.Y };
+        }
+
         public static void bringWindowToFront(IntPtr ptr) {
             
             if(ptr == IntPtr.Zero) {
@@ -86,7 +107,14 @@ namespace LeagueBotV3 {
         #endregion
 
         #region Mouse
-        public static void MoveMouse(int x, int y, bool press = false) {
+
+        public static void MoveMouse(Point point, bool press = false) => MoveMouse(point.X,point.Y,press);
+        public static void MoveMouse(double x, double y, bool press = false) {
+
+            x = (x/double.Parse(Global.dict["SCREENWIDTH"])) * 65535;
+            y = (y/double.Parse(Global.dict["SCREENHEIGHT"])) * 65535;
+
+
             simulator.Mouse.MoveMouseTo(x,y);
             if(press) {
                 simulator.Mouse.LeftButtonClick();
@@ -104,5 +132,7 @@ namespace LeagueBotV3 {
         [DllImport("user32.dll")]
         public static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
     }
 }

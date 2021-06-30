@@ -10,14 +10,15 @@ using System.Text;
 namespace LeagueBotV3 {
 
     public enum MessageLevel {
-        Info,
-        Debug,
-        Error,
-        Critical,
-        Warning,
+        Info = 0,
+        Debug = 1,
+        Warning = 2,
+        Critical = 3,
+        Error = 4,
     }
 
     public static class DBG {
+
 
         private static StreamWriter fileWriter = null;
         private static StreamWriter consoleWriter = null;
@@ -30,6 +31,7 @@ namespace LeagueBotV3 {
 
         public static string dateStr => $"({DateTime.Now})";
 
+        public static MessageLevel consoleLogLvl = MessageLevel.Info;
         public static bool writeToConsole = true;
         public static bool rainbow = false;
         public static ConsoleColor[] colors = new ConsoleColor[] {
@@ -66,7 +68,7 @@ namespace LeagueBotV3 {
             }
         }
 
-        private static void write(string msg) {
+        private static void write(string msg, MessageLevel lvl) {
 
             if(rainbow) {
                 Console.ForegroundColor = colors[0];
@@ -78,7 +80,7 @@ namespace LeagueBotV3 {
             }
 
             fileWriter.WriteLine(msg);
-            if(writeToConsole) {
+            if(writeToConsole && lvl >= consoleLogLvl) {
                 consoleWriter?.WriteLine(msg);
             }
         }
@@ -89,12 +91,12 @@ namespace LeagueBotV3 {
             try {
                 strMsg = (string)msg;
             } catch {
-                write($"{dateStr} - ({MessageLevel.Critical}) - Failed to cast msg to string!");
-                write(Environment.StackTrace);
+                write($"{dateStr} - ({MessageLevel.Critical}) - Failed to cast msg to string!", MessageLevel.Error);
+                write(Environment.StackTrace, MessageLevel.Error);
                 return;
             }
 
-            write($"{dateStr} - ({lvl}) - {strMsg}");
+            write($"{dateStr} - ({lvl}) - {strMsg}", lvl);
         }
 
         public static void logIfDbg(dynamic msg) {
@@ -103,7 +105,7 @@ namespace LeagueBotV3 {
             }
         }
 
-        public static void getConsole() {
+        public static void getConsole(MessageLevel logLvl = MessageLevel.Info) {
             try {
                 AllocConsole();
                 consoleWriter = new StreamWriter(Console.OpenStandardOutput());
